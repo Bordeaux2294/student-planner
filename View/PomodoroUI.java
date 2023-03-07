@@ -1,3 +1,4 @@
+package View;
 import java.awt.event.ActionListener;
 import java.awt.*;
 import javax.swing.*;
@@ -50,7 +51,7 @@ public class PomodoroUI implements ActionListener{
     });
 
 
-    PomodoroUI(){
+    public PomodoroUI(){
         timeLabel.setText(hours_string + ":" + minutes_string + ":" + seconds_string);
         timeLabel.setBounds(100,100,200,100);
         timeLabel.setFont(new Font("Verdana",Font.PLAIN,35));
@@ -115,15 +116,15 @@ public class PomodoroUI implements ActionListener{
 
     }
 
-    void start() {
+    public void start() {
         timer.start();
             }
 
-    void  stop(){
+    public void  stop(){
         timer.stop();
     }
 
-    void reset(){
+    public void reset(){
         timer.stop();
         elapsedTime =0;
         seconds =0;
@@ -134,12 +135,16 @@ public class PomodoroUI implements ActionListener{
         timeLabel.setText(hours_string+ ":" + minutes_string + ":" + seconds_string);
     }
 
-    static int getSeconds(){
+    public static int getSeconds(){
         return (seconds);
     }
 
-    static void countReset(){
+    public static void countReset(){
         resetnum = +1;
+    }
+
+    public static int getPomodoros(){
+        return pomodoro;
     }
 
 
