@@ -39,7 +39,8 @@ public class PomodoroUI implements ActionListener{
                     }
                     start();
                 }
-               if (resetnum == pomodoro-1 ){
+               if (resetnum == pomodoro ){
+                System.out.println("resetnum");
                    reset();
                 }
                 seconds_string = String.format("%02d",seconds);
@@ -121,7 +122,7 @@ public class PomodoroUI implements ActionListener{
             }
 
     public void  stop(){
-        timer.stop();
+        timer.stop();;
     }
 
     public void reset(){
@@ -140,7 +141,7 @@ public class PomodoroUI implements ActionListener{
     }
 
     public static void countReset(){
-        resetnum = +1;
+        resetnum += 1;
     }
 
     public static int getPomodoros(){
