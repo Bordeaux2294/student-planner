@@ -12,7 +12,7 @@ import javax.swing.*;
 import Controller.EventReminderController;
 
 public class CalendarUI {
-
+     
     //attributes for EventForm
     private JTextField eventNameField;
     private JComboBox<Integer> startHourComboBox;
