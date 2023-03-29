@@ -25,12 +25,17 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class MenuUI extends JFrame{
+    private String currentUsername;
+    
     JPanel optionspane;
     JButton Button1;
     JButton Button2;
     static MenuUI Frame;
     MenuUI oldFrame;
-   public MenuUI(){
+
+   public MenuUI(String currentUsername){
+    this.currentUsername =currentUsername;
+     
      Frame=this;
      oldFrame=Frame;
      optionspane=new JPanel();
@@ -56,7 +61,7 @@ public class MenuUI extends JFrame{
      setDefaultCloseOperation(EXIT_ON_CLOSE);
      setVisible(true);
    }
-    
+
     // public static void main(String[] args) throws ParseException{
     //     new MenuUI(); 
         // int sh= 1;
@@ -98,7 +103,7 @@ public class MenuUI extends JFrame{
         public void actionPerformed(ActionEvent e){ 
             if(e.getSource()==Button1){
                 MenuUI oldFrame = Frame;
-                JPanel EventForm= new CalendarUI(Frame).DisplayEventForm();
+                JPanel EventForm= new CalendarUI(currentUsername).DisplayEventForm();
                 EventForm.setVisible(true);
                 Frame.getContentPane().removeAll();
                 Frame.getContentPane().revalidate();

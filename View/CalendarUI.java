@@ -28,9 +28,10 @@ public class CalendarUI {
     private JButton addButton;
 
     JPanel panel;
-    MenuUI Frame;
-    public CalendarUI(MenuUI Frame){
-        this.Frame=Frame;
+    private String  currentUsername;
+
+    public CalendarUI(String currentUsername){
+        this.currentUsername=currentUsername;
     }
     public JPanel DisplayEventForm(){
         
@@ -215,10 +216,10 @@ public class CalendarUI {
             return;
             }
         else {
-            JOptionPane.showMessageDialog(null, "Event saved successfully");
-            new EventReminderController().addEvent(eventName, startDateTime, endDateTime);
-            Frame.dispose();
-            new MenuUI();
+            if (new EventReminderController(currentUsername).addEvent(eventName, startDateTime, endDateTime));
+                 JOptionPane.showMessageDialog(null, "Event saved successfully");
+            // Frame.dispose();
+            new MenuUI(currentUsername);
             //new MenuUI().RefreshPage(true);
             return;
             
