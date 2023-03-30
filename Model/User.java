@@ -64,7 +64,7 @@ public User(String username, String password){
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, username);
             ResultSet row = statement.executeQuery();
-            if (row !=null){
+            if (row.next()){
                  success = true;
             }
  

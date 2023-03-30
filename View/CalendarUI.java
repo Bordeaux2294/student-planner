@@ -25,20 +25,30 @@ public class CalendarUI {
     private JComboBox<Integer> endYearComboBox;
     private JComboBox<Integer> endHourComboBox;
     private JComboBox<Integer> endMinuteComboBox;
+    private JCheckBox setReminderBox;
     private JButton addButton;
+    private JButton closeButton;
 
-    JPanel panel;
+
+    private JComboBox<Integer> DayComboBox;
+    private JComboBox<String> MonthComboBox;
+    private JComboBox<Integer> YearComboBox;
+    private JComboBox<Integer> HourComboBox;
+    private JComboBox<Integer> MinuteComboBox;
+
+    private JPanel panel;
+    private JPanel Rpanel;
     private String  currentUsername;
 
     public CalendarUI(String currentUsername){
         this.currentUsername=currentUsername;
     }
-    public JPanel DisplayEventForm(){
+    public JPanel DisplayEventForm(MenuUI F){
         
         panel = new JPanel(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.insets = new Insets(5, 5, 5, 5);
+        constraints.insets = new Insets(5, 5, 8, 5);
 
         // Add a label and text field for the event name
         constraints.gridx = 0;
@@ -94,27 +104,93 @@ public class CalendarUI {
         constraints.gridx = 6;
         panel.add(endMinuteComboBox, constraints);
 
-        // Add a button to submit the form
+        // Add a checkbox to add reminder field
         constraints.gridx = 0;
         constraints.gridy = 3;
+        constraints.gridwidth = 2;
+        setReminderBox = new JCheckBox("Set Reminder");
+        setReminderBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (setReminderBox.isSelected()) {
+                    Rpanel.setVisible(true);
+                } else {
+                    Rpanel.setVisible(false);
+                }
+            }
+        });
+        panel.add(setReminderBox, constraints);
+
+
+        // Add a panel for the reminder field
+        constraints.gridx = 0;
+        constraints.gridy = 4;
+        constraints.gridwidth = 7;
+        panel.add(getRpanel(), constraints);
+
+        // Add a button to submit the form
+        constraints.gridx = 0;
+        constraints.gridy = 5;
         constraints.gridwidth = 7;
         addButton = new JButton("Add Event");
         addButton.addActionListener(new AddButtonListener());
         panel.add(addButton, constraints);
 
-        // Add a text area to display the reminder list
-        // constraints.gridx = 0;
-        // constraints.gridy = 4;
-        // constraints.gridwidth = 2;
-        // eventList = new JTextArea(10, 30);
-        // eventList.setEditable(false);
-        // JScrollPane scrollPane = new JScrollPane(eventList);
-        // panel.add(scrollPane, constraints);
-
+        // Add a button to go back to previous window
+        constraints.gridx = 0;
+        constraints.gridy = 6;
+        constraints.gridwidth = 7;
+        closeButton = new JButton(" < Back");
+        closeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource()==closeButton) {
+                       F.dispose();
+                       new MenuUI(currentUsername);
+                } 
+            }
+        });
+        panel.add(closeButton, constraints);
+      
         // Add the panel to the JFrame and make it visible
         return panel;
         
     }
+
+    private JPanel getRpanel(){
+        Rpanel = new JPanel(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.insets = new Insets(5, 5, 8, 5);
+         
+
+        // Add a label and dropdown menus for the date and time of the Reminder
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        constraints.gridwidth = 1;
+        Rpanel.add(new JLabel("Date:"), constraints);
+        DayComboBox = new JComboBox<>(getDayArray());
+        constraints.gridx = 1;
+        Rpanel.add(DayComboBox, constraints);
+        MonthComboBox = new JComboBox<>(getMonthArray());
+        constraints.gridx = 2;
+        Rpanel.add(MonthComboBox, constraints);
+        YearComboBox = new JComboBox<>(getYearArray());
+        constraints.gridx = 3;
+        Rpanel.add(YearComboBox, constraints);
+        constraints.gridx = 4;
+        Rpanel.add(new JLabel("Time:"), constraints);
+        HourComboBox = new JComboBox<>(getHourArray());
+        constraints.gridx = 5;
+        Rpanel.add(HourComboBox, constraints);
+        MinuteComboBox = new JComboBox<>(getMinuteArray());
+        constraints.gridx = 6;
+        Rpanel.add(MinuteComboBox, constraints);
+        constraints.gridx = 7;
+        Rpanel.setVisible(false);
+        return Rpanel;
+    }
+
 
     private Integer[] getDayArray() {
         Integer[] days = new Integer[31];

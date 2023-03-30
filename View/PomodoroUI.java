@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.event.*;
 
 public class PomodoroUI implements ActionListener{
+    
     JFrame frame = new JFrame();
     JButton startButton = new JButton("START");
     JButton resetButton = new JButton("RESET");
@@ -87,10 +88,12 @@ public class PomodoroUI implements ActionListener{
         frame.add(startButton);
         frame.add(resetButton);
         frame.add(enterButton);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(420,420);
         frame.setLayout(null);
         frame.setVisible(true);
+
+       
     }
 
     @Override
