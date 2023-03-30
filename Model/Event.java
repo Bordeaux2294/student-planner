@@ -82,7 +82,7 @@ public String getMins(Date d){
     
     DefaultTableModel model = new DefaultTableModel(new Object[]{"Event No."," Event Name", "Start Datetime", "End Datetime", "Status", "Reminder"},0);
     JTable t = new JTable(model);
-
+    
     try (Connection connection = DriverManager.getConnection(url, user, password)) {
         // Select the events from the database
         String sql = "SELECT eid, ename, sdatetime, edatetime, status, reminder FROM events WHERE username = ?";

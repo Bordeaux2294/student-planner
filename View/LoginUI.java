@@ -19,6 +19,7 @@ public class LoginUI extends JFrame implements ActionListener {
     private JButton loginButton;
     private JButton signupButton;
     private JButton login;
+    private JButton close;
     private JButton signup;
     private JLabel errorLabel;
 
@@ -44,7 +45,7 @@ public class LoginUI extends JFrame implements ActionListener {
     }
      //login option for a user that already has an account 
     public void loginOpt(){
-        JPanel panel = new JPanel(new GridLayout(3, 2));
+        JPanel panel = new JPanel(new GridLayout(4, 2));
 
         JLabel usernameLabel = new JLabel("Username:");
         panel.add(usernameLabel);
@@ -62,6 +63,12 @@ public class LoginUI extends JFrame implements ActionListener {
         errorLabel.setForeground(Color.RED);
         panel.add(errorLabel);
 
+        panel.add(new JLabel(""));
+
+        close = new JButton("< Back");
+        close.addActionListener(this);
+        panel.add(close);
+
         login = new JButton("Login");
         login.addActionListener(this);
         panel.add(login);
@@ -70,9 +77,11 @@ public class LoginUI extends JFrame implements ActionListener {
         this.getContentPane().revalidate();
         this.setContentPane(panel);
     }
+
+
     // sign up option for a user that does not have an account
     public void signupOpt(){
-        JPanel panel = new JPanel(new GridLayout(4, 4));
+        JPanel panel = new JPanel(new GridLayout(5, 4));
 
         JLabel usernameLabel = new JLabel("Username:");
         panel.add(usernameLabel);
@@ -95,6 +104,12 @@ public class LoginUI extends JFrame implements ActionListener {
         errorLabel = new JLabel("");
         errorLabel.setForeground(Color.RED);
         panel.add(errorLabel);
+
+        panel.add(new JLabel(""));
+
+        close = new JButton("< Back");
+        close.addActionListener(this);
+        panel.add(close);
 
         signup = new JButton("sign up");
         signup.addActionListener(this);
@@ -160,6 +175,11 @@ public class LoginUI extends JFrame implements ActionListener {
             else{
                 errorLabel.setText("Passwords Do Not Match. Try Again");
             }
+        }
+
+        if (e.getSource()==close){
+            dispose();
+            new LoginUI();
         }
     }
 
