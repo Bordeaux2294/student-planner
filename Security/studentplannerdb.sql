@@ -103,6 +103,7 @@ CREATE TABLE users (
 -- Dumping data for table `users`
 --
 
+INSERT INTO users (username, password) VALUES ('Dee','la');
 INSERT INTO users (username, password) VALUES ('ex','ex');
 INSERT INTO users (username, password) VALUES ('hel','lo');
 INSERT INTO users (username, password) VALUES ('lo','hi');
