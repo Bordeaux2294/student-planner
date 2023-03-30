@@ -9,6 +9,7 @@ import javax.swing.JTextField;
 import javax.swing.table.TableModel;
 
 import Model.Event;
+import Model.Reminder;
 import View.MenuUI;
 
 import java.awt.event.ActionListener;
@@ -34,6 +35,12 @@ public class EventReminderController{
         return true;
                 
     }
+
+    public boolean addReminder(Date datetime){
+        int id = getlastEid();
+        new Reminder(id, datetime);
+        return true;
+    }
     public static JTable getevents(){
         currentUsername = MenuUI.getCurrentUser();
         return Event.listEvents();
@@ -41,5 +48,9 @@ public class EventReminderController{
  
     public static String getCurrentUser(){
         return currentUsername;
+    }
+
+    public static int getlastEid(){
+        return Event.getlastEid();
     }
 }

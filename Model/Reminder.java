@@ -1,15 +1,58 @@
 package Model;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
+
+import Controller.EventReminderController;
 
 public class Reminder {
+
+    private static String url = "jdbc:mysql://localhost:3306/studentplannerdb";
+    private static String user = "root";
+    private static String password = "Myaccess123.";
+
  
-    public Reminder(){}
+    private int eid;
+    private Date datetime;
+
+    public Reminder(int eid, Date datetime){
+      this.eid =eid;
+      this.datetime =datetime;
+      storeReminder();
+      return;
+    }
 
 
 //public ArrayList<Reminder> listReminders(){}
 
-//public void storeReminder(){}
+// public static void sendNotif(){}
+
+public void storeReminder(){
+    try (Connection connection = DriverManager.getConnection(url, user, password)) {
+        // Insert the reminder into the database
+        System.out.println(eid+""+datetime);
+        String sql = "INSERT INTO reminder (eid, datetime) VALUES (?,?)";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, eid); 
+        statement.setTimestamp(2, new Timestamp(datetime.getTime()));
+        statement.executeUpdate();
+
+        String sql2 = "Update events Set reminder= 'Set' Where eid = ? ";
+        PreparedStatement stmt = connection.prepareStatement(sql2);
+        stmt.setInt(1, eid); 
+        stmt.executeUpdate();
+
+    } catch (SQLException ex) {
+        System.out.println(ex); 
+    }
+
+
+}
 }
 
 

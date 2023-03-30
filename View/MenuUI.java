@@ -1,7 +1,8 @@
 package View;
 
 import javax.swing.BorderFactory;
-
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
@@ -13,9 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import javax.swing.JTable;
-
-import javax.swing.table.DefaultTableModel;
-
+import javax.swing.JTextPane;
 
 import Controller.EventReminderController;
 
@@ -29,7 +28,7 @@ import java.awt.GridLayout;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-
+import java.awt.Component;
 import java.awt.event.*;
 
 
@@ -43,15 +42,16 @@ public class MenuUI extends JFrame{
     private JMenuItem pomodoroClockMenuItem;
     private JMenuItem viewCoursesMenuItem;
     private JMenuItem courseTimetableMenuItem;
+    private JMenuItem LogoutMenuItem;
 
     private JScrollPane scrollPane;
     private static JTable table;
-    private DefaultTableModel tableModel;
+
 
     static MenuUI Frame;
 
     public MenuUI(String currentUsername) {
-        this.currentUsername = currentUsername;
+        MenuUI.currentUsername = currentUsername;
         Frame=this;
         
         // Set up JFrame properties
@@ -82,15 +82,39 @@ public class MenuUI extends JFrame{
         courseTimetableMenuItem.addActionListener(new MenuItemListener());
         courseTimetableMenuItem.setBackground(new Color(255, 192, 203)); // Pink background
 
+        LogoutMenuItem = new JMenuItem("Log Out");
+        LogoutMenuItem.addActionListener(new MenuItemListener());
+        LogoutMenuItem.setBackground(new Color(255, 215, 0)); // Yellow background
+
         // Add menu items to the menu bar
         menubar.add(createEventMenuItem);
         menubar.add(pomodoroClockMenuItem);
         menubar.add(viewCoursesMenuItem);
         menubar.add(courseTimetableMenuItem);
+        menubar.add(LogoutMenuItem);
 
-        // Create left panel for events table
+        // Create right panel
         JPanel rightpanel = new JPanel();
         rightpanel.setBackground(new Color(255, 228, 225)); // Light pink background
+       
+        // Create left panel
+        JPanel leftpanel =new JPanel();
+        leftpanel.setBackground(new Color(255, 228, 225)); // Light pink background
+        Font wFont = new Font("Garamond", Font.BOLD | Font.ITALIC, 15);
+        JLabel welcome1 = new JLabel("Hello "+ currentUsername +"! Welcome to our Student Planner App" );
+        welcome1.setAlignmentX(Component.CENTER_ALIGNMENT);
+        welcome1.setFont(wFont);
+        JLabel welcome2 = new JLabel("Remember 'Failing to plan is planning to fail.' - Alan Lakein." );
+        welcome2.setAlignmentX(Component.CENTER_ALIGNMENT);
+        welcome2.setFont(wFont);
+        
+        leftpanel.setLayout(new BoxLayout(leftpanel, BoxLayout.Y_AXIS));
+        leftpanel.add(Box.createVerticalGlue());
+        leftpanel.add(welcome1);
+        leftpanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        leftpanel.add(welcome2);
+        leftpanel.add(Box.createVerticalGlue());
+        
 
         // Create event panel
         eventpane = new JPanel();
@@ -100,8 +124,9 @@ public class MenuUI extends JFrame{
 
         
         // Create label for events table
+        Font eFont = new Font("Garamond", Font.BOLD | Font.ITALIC, 30);
         JLabel elabel = new JLabel("Your Events");
-        elabel.setFont(new Font("Arial", Font.BOLD, 30));
+        elabel.setFont(eFont);
         elabel.setHorizontalAlignment(JLabel.CENTER);
         elabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
         eventpane.add(elabel, BorderLayout.NORTH);
@@ -110,6 +135,7 @@ public class MenuUI extends JFrame{
         
         
         table = loadEventTable();
+        
         table.setBackground(Color.white);
         table.getTableHeader().setBackground(new Color(255, 192, 203)); // Pink background
     
@@ -118,9 +144,11 @@ public class MenuUI extends JFrame{
         eventpane.add(scrollPane, BorderLayout.CENTER);
 
         // Add left and right panels to main panel
-        panel.setLayout(new GridLayout(1, 2));
+        panel.setLayout(new GridLayout(2, 5));
+        panel.add(leftpanel);
         panel.add(rightpanel);
         panel.add(eventpane);
+        
 
         // Add menu bar and main panel to JFrame
         setJMenuBar(menubar);
@@ -151,8 +179,12 @@ public class MenuUI extends JFrame{
                 Frame.getContentPane().revalidate();
                 Frame.setContentPane(EventForm);
 
-            } else if (e.getSource()==pomodoroClockMenuItem){
+            } if (e.getSource()==pomodoroClockMenuItem){
                 new PomodoroUI();
+            }
+            if (e.getSource()==LogoutMenuItem){
+                Frame.dispose();
+                new LoginUI();
             }
         
         }  

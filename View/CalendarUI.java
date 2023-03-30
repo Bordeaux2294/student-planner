@@ -39,12 +39,13 @@ public class CalendarUI {
     private JPanel panel;
     private JPanel Rpanel;
     private String  currentUsername;
+    private MenuUI F;
 
     public CalendarUI(String currentUsername){
         this.currentUsername=currentUsername;
     }
     public JPanel DisplayEventForm(MenuUI F){
-        
+        this.F =F;
         panel = new JPanel(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -258,9 +259,6 @@ public class CalendarUI {
                          endMinuteComboBox.getSelectedItem().toString() + ":00";
         
 
-
-
-
         // Convert the dates and times to Date objects
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date startDateTime = null;
@@ -269,6 +267,24 @@ public class CalendarUI {
         try {
             startDateTime = dateFormat.parse(startDate + " " + startTime);
             endDateTime = dateFormat.parse(endDate + " " + endTime);
+        } catch (ParseException ex) {
+            JOptionPane.showMessageDialog(null, "Invalid date or time format.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+
+        // create date time variables for reminder
+        String date = YearComboBox.getSelectedItem().toString() + "-" + 
+                        (MonthComboBox.getSelectedIndex() + 1) + "-" + 
+                        DayComboBox.getSelectedItem().toString();
+        
+        String time =  HourComboBox.getSelectedItem().toString() + ":" + 
+                        MinuteComboBox.getSelectedItem().toString() + ":00";
+        
+        // Convert the dates and times to Date objects
+         Date dateTime=null;
+         try {
+            dateTime = dateFormat.parse(date + " " + time);
         } catch (ParseException ex) {
             JOptionPane.showMessageDialog(null, "Invalid date or time format.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
@@ -292,16 +308,37 @@ public class CalendarUI {
             return;
             }
         else {
-            if (new EventReminderController(currentUsername).addEvent(eventName, startDateTime, endDateTime));
-                 JOptionPane.showMessageDialog(null, "Event saved successfully");
-            // Frame.dispose();
-            new MenuUI(currentUsername);
-            //new MenuUI().RefreshPage(true);
-            return;
-            
-        }
+             EventReminderController er =new EventReminderController(currentUsername);
+            if (er.addEvent(eventName, startDateTime, endDateTime)){
+                    if (setReminderBox.isSelected()){
+                            if (dateTime.before(currentDate)){
+                                JOptionPane.showMessageDialog(null, "Start date/time cannot be before current date/time.", "Error", JOptionPane.ERROR_MESSAGE);
+                                return;
+                            
+                            }else {
+                                    if (er.addReminder(dateTime) ==false){
+                                        JOptionPane.showMessageDialog(null, "Something went wrong.", "Error", JOptionPane.ERROR_MESSAGE);
+                                    
+                                    }
+                                    else {
+                                        JOptionPane.showMessageDialog(null, "Event saved successfully");
+                                        F.dispose();
+                                        new MenuUI(currentUsername);
+                                        return;
+                                    }       
+                                }
+                       
+                    } else { 
+                        JOptionPane.showMessageDialog(null, "Event saved successfully");
+                        F.dispose();
+                        new MenuUI(currentUsername);
+                        return;
+                    }   
+           }
         }
 
     }
 }
+}
+
 

@@ -30,6 +30,8 @@ public class LoginUI extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         JPanel optionspane = new JPanel();
+
+        
         loginButton = new JButton("Login");
         loginButton.addActionListener(this);
         optionspane.add(loginButton);
