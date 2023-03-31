@@ -15,6 +15,8 @@ import javax.swing.JScrollPane;
 
 import javax.swing.JTable;
 import javax.swing.JTextPane;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 import Controller.EventReminderController;
 
@@ -135,9 +137,13 @@ public class MenuUI extends JFrame{
         
         
         table = loadEventTable();
-        
         table.setBackground(Color.white);
         table.getTableHeader().setBackground(new Color(255, 192, 203)); // Pink background
+        table.setRowHeight(20);
+        table.setFillsViewportHeight(true);
+        setColumnWidths(table, new int[] { 100, 100, 150, 150, 100,100 });
+        table.setIntercellSpacing(new Dimension(0, 0));
+        table.setShowGrid(false);
     
         // Add table to scroll pane
         scrollPane = new JScrollPane(table);
@@ -160,6 +166,15 @@ public class MenuUI extends JFrame{
         setVisible(true);
     }
     
+    private void setColumnWidths(JTable t, int[] widths) {
+        TableColumnModel columnModel = t.getColumnModel();
+        for (int i = 0; i < widths.length; i++) {
+            TableColumn column = columnModel.getColumn(i);
+            column.setPreferredWidth(widths[i]);
+            column.setMaxWidth(widths[i]);
+            column.setMinWidth(widths[i]);
+        }
+    }
     public static JTable loadEventTable(){
         return EventReminderController.getevents();
         

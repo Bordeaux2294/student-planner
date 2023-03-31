@@ -6,11 +6,6 @@ import Controller.AccountController;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 public class LoginUI extends JFrame implements ActionListener {
     private JTextField usernameField;
