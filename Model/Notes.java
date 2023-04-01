@@ -124,6 +124,13 @@ public class Notes {
             statement.setInt(1, getCourseID());
             statement.setString(2, getText());
             statement.executeUpdate();
+
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                int noteID = generatedKeys.getInt(1);
+                setNoteID(noteID);
+            }
+
         } catch (SQLException ex) {
             System.out.println(ex);
         }
@@ -183,20 +190,8 @@ public class Notes {
 
     }
 
-    // public static void main(String[] args) {
-    // Notes checkNotes = new Notes();
-    // System.out.println(checkNotes.isEmpty());
-    // checkNotes.getNote(10);
-    // System.out.println(checkNotes.isEmpty());
-    // // Notes myNotes = new Notes("This is a test 2", 2);
-    // // myNotes.updateNote("This should update the note");
-    // // Notes tNotes = new Notes();
-    // // System.out.println(tNotes.getNote(1).getText());
-    // // tNotes.updateNote("I just updated the note with courseID 1");
-    // // Notes myNotes = new Notes();
-    // // myNotes.getNote(0);
-    // // System.out.println(myNotes.getText() + myNotes.getNoteID());
-
-    // }
-
+    @Override
+    public String toString() {
+        return "<NoteID>: " + getNoteID() + " <CourseID>: " + getCourseID() + " <Note>: " + getText();
+    }
 }
