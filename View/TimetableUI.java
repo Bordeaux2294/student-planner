@@ -30,6 +30,7 @@ public class TimetableUI extends JFrame {
         this.F=F;
         // Set up the main panel
         mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBackground(new Color(255, 228, 225));
         setContentPane(mainPanel);
 
         // Add the title label

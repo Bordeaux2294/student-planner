@@ -106,7 +106,7 @@ public class CourseInfoUI extends JFrame {
         // Load courses from the database
         try {
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/studentplannerdb", "root", "");
-            String sql ="Select schedule.course_code, courses.course_name, schedule.day_of_week, schedule.start_time, schedule.end_time, schedule.instructor, schedule.room, schedule.ctype  from schedule inner join courses on schedule.course_code= courses.course_code where schedule.username=? group by start_time order by CASE WHEN day_of_week =  'Sunday' THEN 1 WHEN day_of_week= 'Monday' THEN 2 WHEN day_of_week= 'Tuesday' THEN 3 WHEN day_of_week= 'Wednesday' THEN 4 WHEN day_of_week= 'Thursday' THEN 5 WHEN day_of_week= 'Friday' THEN 6 WHEN day_of_week= 'Saturday' THEN 7 END ASC;";
+            String sql ="Select schedule.course_code, courses.course_name, schedule.day_of_week, schedule.start_time, schedule.end_time, schedule.instructor, schedule.room, schedule.ctype  from schedule inner join courses on schedule.course_code= courses.course_code where schedule.username=? group by start_time order by CASE WHEN day_of_week =  'Sunday' THEN 1 WHEN day_of_week= 'Monday' THEN 2 WHEN day_of_week= 'Tuesday' THEN 3 WHEN day_of_week= 'Wednesday' THEN 4 WHEN day_of_week= 'Thursday' THEN 5 WHEN day_of_week= 'Friday' THEN 6 WHEN day_of_week= 'Saturday' THEN 7 END ASC";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, currentUsername);
             ArrayList<String> courseNames = new ArrayList<String>();

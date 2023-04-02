@@ -63,7 +63,7 @@ public class CourseViewUI extends JFrame {
     private class CloseButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             // Close the window
-            setVisible(false);
+            dispose();
         }
     }
 

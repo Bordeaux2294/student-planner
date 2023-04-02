@@ -210,7 +210,7 @@ public class ScheduleEntryUI extends JFrame {
     }
     class cbActionListener implements ActionListener{
         public void actionPerformed(ActionEvent e){
-            setVisible(false);
+            dispose();
         }
     }
 
