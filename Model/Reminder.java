@@ -14,7 +14,7 @@ public class Reminder {
 
     private static String url = "jdbc:mysql://localhost:3306/studentplannerdb";
     private static String user = "root";
-    private static String password = "Myaccess123.";
+    private static String password = "";
 
  
     private int eid;
