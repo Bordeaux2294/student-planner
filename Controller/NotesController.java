@@ -22,12 +22,15 @@ public class NotesController {
      * @param text
      *                 String the text for the note.
      * @param courseID
-     *                 Int the course to which the note belongs to
+     *                 Int the course to which the note belongs to.
+     * @param username
+     *                 String username of the person to which the account belongs
+     *                 to.
      * @return
      *         Notes object that was just created.
      */
-    public Notes createNote(String text, int courseID) {
-        Notes note = new Notes(text, courseID);
+    public Notes createNote(String text, int courseID, String username) {
+        Notes note = new Notes(text, courseID, username);
         this.note = note;
         return this.note;
     }
@@ -37,13 +40,15 @@ public class NotesController {
      * 
      * @param courseID
      *                 Course ID to which the note belongs to
+     * @param username
+     *                 String username of the person to which the account belongs to
      * @return
      *         Notes object. Notes object will be empty if match is not found in the
      *         database
      */
-    public Notes getNote(int courseID) {
+    public Notes getNote(int courseID, String username) {
         Notes note = new Notes();
-        return note.getNote(courseID);
+        return note.getNote(courseID, username);
     }
 
     /**
