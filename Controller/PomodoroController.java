@@ -1,30 +1,45 @@
-package Controller;
-import View.PomodoroUI;
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class PomodoroController {
-    public PomodoroController() {
-        
-        PomodoroUI pomodoroClock = new PomodoroUI();
+    static Timer timer;
+    public static void main(String[] args) {
+        PomodoroView pomodoro = new PomodoroView();
+        PomodoroModel model = new PomodoroModel();
 
-        while (PomodoroUI.getPomodoros() == 0) {
-            try {
-                Thread.sleep(3);
-            } catch (InterruptedException ex) {
-                throw new RuntimeException(ex);
+
+        timer = new Timer(1000, new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                model.elapsedTime +=1000;
+                model.hours = model.elapsedTime/3600000;
+                model.minutes = (model.elapsedTime/60000)%60;
+                model.seconds =(model.elapsedTime/1000)%60;
+
+                model.seconds_string = String.format("%02d",model.seconds);
+                model.minutes_string = String.format("%02d",model.minutes);
+                model.hours_string = String.format("%02d",model.hours);
+
+                pomodoro.timeLabel.setText(model.hours_string + ":" + model.minutes_string + ":" + model.seconds_string);
+                if(pomodoro.began==true){
+                    model.started=true;
+                    pomodoro.startButton.setText("STOP");
+                }
+                else{
+                    model.started=false;
+                    pomodoro.startButton.setText("START");
+                }
+                if(e.getSource()==pomodoro.enterButton1){
+                    pomodoro.start();
+                }
+
             }
-        }
 
-        int pomodoro = PomodoroUI.getPomodoros() + 1;
-        while (pomodoro > 0) {
-        }
-        pomodoroClock.start();
-        pomodoro = -1;
 
-        if(pomodoro == 0){
-            pomodoroClock.stop();
-        }
-     }
+        });
+
+
 
     }
-
-
+}
