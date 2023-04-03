@@ -1,6 +1,5 @@
 package View;
 
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
@@ -20,7 +19,6 @@ import java.util.ArrayList;
 
 public class CalculatorUI{
 
-	public static JFrame frame1;
 	public static JPanel frame;
 	public static JTextField Assignment_textField;
 	public static JTextField Grade_textField;
@@ -135,7 +133,7 @@ public class CalculatorUI{
 		AverageGradeValue_Label = new JLabel("45%");
 		AverageGradeValue_Label.setHorizontalAlignment(SwingConstants.CENTER);
 		AverageGradeValue_Label.setFont(new Font("Arial", Font.BOLD, 48));
-		AverageGradeValue_Label.setBounds(407, 364, 222, 118);
+		AverageGradeValue_Label.setBounds(345, 364, 372, 86);
 		frame.add(AverageGradeValue_Label);
 		AverageGradeValue_Label.setVisible(false);
 	}
@@ -145,10 +143,18 @@ public class CalculatorUI{
 		String Assignment = CalculatorUI.Assignment_textField.getText();
 		String Grade = CalculatorUI.Grade_textField.getText();
 		String Weight = CalculatorUI.Weight_textField.getText();
+		String LetterOrSymbol = ".*[a-zA-Z\\W&&[^.]].*";
 		
 		if(Assignment.isEmpty() || Weight.isEmpty()) {
 			JOptionPane.showMessageDialog(null,"Please Enter Assignment Name and Weight","Try Again", JOptionPane.ERROR_MESSAGE);
-		} else {
+		}
+		else if(Grade.matches(LetterOrSymbol) || Weight.matches(LetterOrSymbol) || Weight.equals(".") || Weight.equals("0")){
+			JOptionPane.showMessageDialog(null,"Please Enter Correct Grade and Weight","Try Again", JOptionPane.ERROR_MESSAGE);
+		}
+		else {
+			if(Grade.isEmpty() || Grade.equals(".")){
+				Grade ="0";
+			}
 			DefaultTableModel model = (DefaultTableModel) CalculatorUI.Table_Grade.getModel();
 			model.addRow(new Object[]{Assignment, Grade, Weight});
 			CalculatorUI.Assignment_textField.setText("");
