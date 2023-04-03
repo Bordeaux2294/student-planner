@@ -18,11 +18,16 @@ public class Reminder {
 
     private static String url = "jdbc:mysql://localhost:3306/studentplannerdb";
     private static String user = "root";
-    private static String password = "Myaccess123.";
+<<<<<<< HEAD
+    private static String pword = "Myaccess123.";
      
     private static Date currentDate = new Date();
     private static ArrayList<Reminder> rlst = new ArrayList<Reminder>();
     private static ArrayList<Event> elst = new ArrayList<Event>();
+=======
+    private static String password = "";
+
+>>>>>>> fde8aee0ff1657ce39e9e9ec50569a5b229b64c3
  
     private int eid;
     private Date datetime;
