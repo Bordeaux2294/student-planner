@@ -13,7 +13,7 @@ public class User {
 public User(){}
 private String url = "jdbc:mysql://localhost:3306/studentplannerdb";
 private String user = "root";
-private String pword = "";
+private String pword = "Myaccess123.";
 public User(String username, String password){
         
         if (checkUser(username)==false){

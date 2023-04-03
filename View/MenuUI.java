@@ -207,7 +207,7 @@ public class MenuUI extends JFrame{
                 new LoginUI();
             }
             if (e.getSource()==viewCoursesMenuItem){
-                new CourseViewUI(currentUsername);
+                new ContainerUI();
             }
 
             if(e.getSource()==AddCourseMenuItem){
