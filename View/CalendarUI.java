@@ -73,7 +73,7 @@ public class CalendarUI {
         constraints.gridx = 3;
         panel.add(startYearComboBox, constraints);
         constraints.gridx = 4;
-        panel.add(new JLabel("Start Time:"), constraints);
+        panel.add(new JLabel("Start Time (24hrs):"), constraints);
         startHourComboBox = new JComboBox<>(getHourArray());
         constraints.gridx = 5;
         panel.add(startHourComboBox, constraints);
@@ -95,7 +95,7 @@ public class CalendarUI {
         constraints.gridx = 3;
         panel.add(endYearComboBox, constraints);
         constraints.gridx = 4;
-        panel.add(new JLabel("End Time:"), constraints);
+        panel.add(new JLabel("End Time (24hrs):"), constraints);
         endHourComboBox = new JComboBox<>(getHourArray());
         constraints.gridx = 5;
         panel.add(endHourComboBox, constraints);
@@ -178,7 +178,7 @@ public class CalendarUI {
         constraints.gridx = 3;
         Rpanel.add(YearComboBox, constraints);
         constraints.gridx = 4;
-        Rpanel.add(new JLabel("Time:"), constraints);
+        Rpanel.add(new JLabel("Time (24hrs):"), constraints);
         HourComboBox = new JComboBox<>(getHourArray());
         constraints.gridx = 5;
         Rpanel.add(HourComboBox, constraints);
