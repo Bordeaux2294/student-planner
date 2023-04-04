@@ -1,3 +1,4 @@
+package Model;
 public class PomodoroModel {
     int elapsedTime = 0;
     int seconds = 0;

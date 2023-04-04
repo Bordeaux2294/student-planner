@@ -19,6 +19,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import Controller.EventReminderController;
+import Model.Course;
 
 import java.awt.Dimension;
 
@@ -31,6 +32,7 @@ import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.event.*;
 
 
@@ -46,6 +48,7 @@ public class MenuUI extends JFrame{
     private JMenuItem courseTimetableMenuItem;
     private JMenuItem LogoutMenuItem;
     private JMenuItem AddCourseMenuItem;
+    private JMenuItem containerMenuItem;
 
     private JScrollPane scrollPane;
     private static JTable table;
@@ -77,25 +80,31 @@ public class MenuUI extends JFrame{
         pomodoroClockMenuItem.addActionListener(new MenuItemListener());
         pomodoroClockMenuItem.setBackground(new Color(255, 192, 203)); // Pink background
 
-        viewCoursesMenuItem = new JMenuItem("View Your Courses");
+        viewCoursesMenuItem = new JMenuItem("View Courses");
         viewCoursesMenuItem.addActionListener(new MenuItemListener());
         viewCoursesMenuItem.setBackground(new Color(255, 215, 0)); // Yellow background
 
+        containerMenuItem = new JMenuItem("Course Containers");
+        containerMenuItem.addActionListener(new MenuItemListener());
+        containerMenuItem.setBackground(new Color(255, 192, 203)); // Pink background
+
         courseTimetableMenuItem = new JMenuItem("Course Timetable");
         courseTimetableMenuItem.addActionListener(new MenuItemListener());
-        courseTimetableMenuItem.setBackground(new Color(255, 192, 203)); // Pink background
+        courseTimetableMenuItem.setBackground(new Color(255, 215, 0)); // Yellow background
 
         AddCourseMenuItem = new JMenuItem("Add Course");
         AddCourseMenuItem.addActionListener(new MenuItemListener());
-        AddCourseMenuItem.setBackground(new Color(255, 215, 0)); // Yellow background
+        AddCourseMenuItem.setBackground(new Color(255, 192, 203)); // Pink background
 
         LogoutMenuItem = new JMenuItem("Log Out");
         LogoutMenuItem.addActionListener(new MenuItemListener());
-        LogoutMenuItem.setBackground(new Color(255, 192, 203));
+        LogoutMenuItem.setBackground(new Color(255, 215, 0)); // Yellow background
+
         // Add menu items to the menu bar
         menubar.add(createEventMenuItem);
         menubar.add(pomodoroClockMenuItem);
         menubar.add(viewCoursesMenuItem);
+        menubar.add(containerMenuItem);
         menubar.add(courseTimetableMenuItem);
         menubar.add(AddCourseMenuItem);
         menubar.add(LogoutMenuItem);
@@ -207,6 +216,9 @@ public class MenuUI extends JFrame{
                 new LoginUI();
             }
             if (e.getSource()==viewCoursesMenuItem){
+                new CourseInfoUI(currentUsername);
+            }
+            if (e.getSource()==containerMenuItem){
                 new ContainerUI();
             }
 
