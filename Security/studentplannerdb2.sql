@@ -67,7 +67,6 @@ INSERT INTO reminder (eid, datetime, rid) VALUES (14,'2023-06-01 02:00:00',5);
 INSERT INTO reminder (eid, datetime, rid) VALUES (14,'2023-06-01 02:00:00',6);
 INSERT INTO reminder (eid, datetime, rid) VALUES (15,'2023-08-01 00:00:00',7);
 
-<<<<<<< HEAD
 
 DROP TABLE IF EXISTS notes;
 CREATE TABLE notes(
@@ -79,7 +78,6 @@ CREATE TABLE notes(
   KEY username_fnote (username),
   CONSTRAINT username_fn FOREIGN KEY (username) REFERENCES users (username)
 )ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
-=======
 DROP TABLE IF EXISTS courses;
 CREATE TABLE courses(
   username varchar(16) NOT NULL,
@@ -121,5 +119,4 @@ Insert into schedule VALUES (2,'lo','Tuesday','08:00','09:00','Mgmt2001','Markle
 Insert into schedule VALUES (3,'lo','Monday','10:00','11:00','Comp2211','Baker','SLT3','Tutorial');
 Insert into schedule VALUES (4,'lo','Friday','14:00','15:00','Foun1014','Willis','LSSR','Lecture');
 Insert into schedule VALUES (5,'lo','Thursday','12:00','13:00','Econ1005','Cox','RDHKL','Lecture');
->>>>>>> ea27c7e6c9acf90b025590f58d92382b43a2c37b
 
