@@ -1,13 +1,14 @@
 package Controller;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 import javax.sound.sampled.*;
 
+import Model.Reminder;
 import View.RemindernotifUI;
 
 import java.util.Scanner;
-
 
 public class RemindernotifController {
 
@@ -17,7 +18,7 @@ public class RemindernotifController {
         System.out.println("What's the name of the event?");
         Scanner reminder = new Scanner(System.in);
         assignmentname = reminder.nextLine();
-        ReminderModel model = new ReminderModel();
+        Reminder model = new Reminder(0, null);
         RemindernotifUI.assignment.setText("Hey! Don't forget about " + RemindernotifController.assignmentname + "!");
 
         File file = new File("rasengan.wav");

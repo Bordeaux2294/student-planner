@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.JFrame;
+
 public class Notes {
     private static String url = "jdbc:mysql://localhost:3306/studentplannerdb";
     private static String user = "root";
@@ -14,6 +16,7 @@ public class Notes {
     private String text = "";
     public int courseID = 0;
     private int noteID = -999;
+    private String username = "";
 
     /**
      * Creates a note and saves it to the database - database stores a notedID,
@@ -23,10 +26,14 @@ public class Notes {
      *                   String which is the text of the note
      * @param courseID
      *                   Int which tells which course the note belongs to
+     * @param username
+     *                   String which is the username of the person to which the
+     *                   account belongs to
      */
-    public Notes(String noteString, int courseID) {
+    public Notes(String noteString, int courseID, String username) {
         this.text = noteString;
         this.courseID = courseID;
+        this.username = username;
         saveNote();
     }
 
@@ -82,6 +89,17 @@ public class Notes {
     }
 
     /**
+     * this method is used to return the username that is attached to the note which
+     * belongs to the account holder.
+     * 
+     * @return
+     *         String username
+     */
+    public String getUsername() {
+        return this.username;
+    }
+
+    /**
      * This method is used to set the text of the note.
      * 
      * @param textString
@@ -113,16 +131,28 @@ public class Notes {
     }
 
     /**
+     * This method is used to set the username of the Note to which the account
+     * belongs to
+     * 
+     * @param username
+     *                 String name a person to which the account belongs to
+     */
+    private void setUsername(String username) {
+        this.username = username;
+    }
+
+    /**
      * Inserts a note into the database. Stores the noteID, courseID and text of the
      * note.
      */
     public void saveNote() {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             // Insert note into the database
-            String sql = "INSERT INTO notes (courseID, text) VALUES (?, ?)";
+            String sql = "INSERT INTO notes (courseID, username, text) VALUES (?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, getCourseID());
-            statement.setString(2, getText());
+            statement.setString(2, getUsername());
+            statement.setString(3, getText());
             statement.executeUpdate();
 
             ResultSet generatedKeys = statement.getGeneratedKeys();
@@ -130,7 +160,6 @@ public class Notes {
                 int noteID = generatedKeys.getInt(1);
                 setNoteID(noteID);
             }
-
         } catch (SQLException ex) {
             System.out.println(ex);
         }
@@ -146,17 +175,19 @@ public class Notes {
      * @return
      *         Notes object that has all the updated attributes
      */
-    public Notes getNote(int courseID) {
+    public Notes getNote(int courseID, String username) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String sql = "SELECT * FROM notes WHERE courseID=?";
+            String sql = "SELECT * FROM notes WHERE courseID=? AND username=?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, courseID);
+            statement.setString(2, username);
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
                 setText(result.getString("text"));
                 setCourse(result.getInt("courseID"));
                 setNoteID(result.getInt("noteID"));
+                setUsername(result.getString("username"));
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -178,10 +209,11 @@ public class Notes {
         setText(updatedText);
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             // Insert note into the database
-            String sql = "UPDATE notes SET text=? WHERE courseID=?";
+            String sql = "UPDATE notes SET text=? WHERE courseID=? AND username=?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, getText());
             statement.setInt(2, getCourseID());
+            statement.setString(3, getUsername());
             int rowsUpdated = statement.executeUpdate();
             System.out.println("Rows updated : " + rowsUpdated);
         } catch (SQLException ex) {
@@ -192,6 +224,7 @@ public class Notes {
 
     @Override
     public String toString() {
-        return "<NoteID>: " + getNoteID() + " <CourseID>: " + getCourseID() + " <Note>: " + getText();
+        return "<NoteID>: " + getNoteID() + " <CourseID>: " + getCourseID() + " <User>: " + getUsername() + " <Note>: "
+                + getText();
     }
 }
