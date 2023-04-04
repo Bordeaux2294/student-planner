@@ -238,10 +238,7 @@ public class ScheduleEntryUI extends JFrame {
         CourseController scc = new CourseController(currentUsername);
         return CourseController.listCourses();
     }
-    // public static void main(String[] args) {
-    //     ScheduleEntryUI gui = new ScheduleEntryUI("hel");
-    //     gui.setVisible(true);
-    // }
+   
 }
     
 

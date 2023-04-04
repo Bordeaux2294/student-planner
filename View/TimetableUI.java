@@ -159,7 +159,5 @@ public class TimetableUI extends JFrame {
     public static List<String> getEntry(){
         return ScheduleController.getScheduleEntry();
     }
-    // public static void main(String[] args) {
-    //     new TimetableUI();
-    // }
+    
 }

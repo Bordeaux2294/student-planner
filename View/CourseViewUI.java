@@ -83,13 +83,7 @@ public class CourseViewUI extends JFrame {
             dispose();
         }
     }
-    // public static void main(String[] args) {
-        
-    //     CourseViewUI gg = new CourseViewUI("lo");
-    //     gg.setVisible(true);
-    //     //System.out.println(getCourses());
-        
-    // }
+    
 
     
 }

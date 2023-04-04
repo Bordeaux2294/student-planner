@@ -70,11 +70,6 @@ public class CourseInfoUI extends JFrame {
             setVisible(false);
         }
     }
-    public static void main(String[] args) {
-        CourseInfoUI gg = new CourseInfoUI("lo");
-        gg.setVisible(true);
-        
-    }
     
 }
 

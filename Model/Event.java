@@ -27,7 +27,7 @@ public class Event{
     private static String currentUsername;
     private static String url = "jdbc:mysql://localhost:3306/studentplannerdb";
     private static String user = "root";
-    private static String password = "Myaccess123.";
+    private static String password = "";
 
 
 public Event(int eid, String eventName, Date startDateTime, Date endDateTime, String status, String reminder){
