@@ -108,3 +108,4 @@ Insert into schedule VALUES (2,'lo','Tuesday','08:00','09:00','Mgmt2001','Markle
 Insert into schedule VALUES (3,'lo','Monday','10:00','11:00','Comp2211','Baker','SLT3','Tutorial');
 Insert into schedule VALUES (4,'lo','Friday','14:00','15:00','Foun1014','Willis','LSSR','Lecture');
 Insert into schedule VALUES (5,'lo','Thursday','12:00','13:00','Econ1005','Cox','RDHKL','Lecture');
+

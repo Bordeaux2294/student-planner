@@ -3,9 +3,15 @@
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
+import Controller.ScheduleController;
+
 import java.awt.*;
 import java.sql.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.*;
 
 public class TimetableUI extends JFrame {
 
@@ -19,9 +25,11 @@ public class TimetableUI extends JFrame {
     private JButton addEntry;
     private String  currentUsername;
     private MenuUI F;
+    private List<String> entryList;
 
     public TimetableUI(String currentUsername) {
         this.currentUsername=currentUsername;
+        ScheduleController sc = new ScheduleController(currentUsername);
         
 
     }
@@ -54,21 +62,20 @@ public class TimetableUI extends JFrame {
         mainPanel.add(tableScrollPane, BorderLayout.CENTER);
 
         // Retrieve timetable data from database and update the table
-        try {
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/studentplannerdb", "root", "");
-            String sql = "SELECT * FROM schedule where username =?";
-            PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setString(1, currentUsername);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                String courseName = rs.getString("course_code");
-                String courseDay = rs.getString("day_of_week");
-                String courseStartTime = rs.getString("start_time");
-                String courseEndTime = rs.getString("end_time");
-
-                int rowStart = Integer.parseInt(courseStartTime.substring(0, 2));
+        List<String> entryList= new ArrayList<>();
+        entryList=getEntry();
+        Iterator<String> it = entryList.iterator();
+        while (it.hasNext()) {
+            String[] splitStr = it.next().trim().split("\\s+");
+            String courseName = splitStr[0];
+            String courseDay = splitStr[1];
+            String courseStartTime = splitStr[2];
+            String courseEndTime = splitStr[3];
+            
+            
+            int rowStart = Integer.parseInt(courseStartTime.substring(0, 2));
                 int rowEnd = Integer.parseInt(courseEndTime.substring(0, 2));
-
+                
                 int column = -1;
                 switch (courseDay) {
                     case "Sunday":
@@ -93,17 +100,10 @@ public class TimetableUI extends JFrame {
                         column = 7;
                         break;
                 }
-
+                
                 for (int i = rowStart - 7; i < rowEnd - 7; i++) {
                     data[i][column] = courseName;
                 }
-            }
-
-            rs.close();
-            stmt.close();
-            con.close();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         addEntry = new JButton("Add Entry");
         addEntry.addActionListener(new ActionListener() {
@@ -156,6 +156,9 @@ public class TimetableUI extends JFrame {
         return mainPanel;
     }
 
+    public static List<String> getEntry(){
+        return ScheduleController.getScheduleEntry();
+    }
     // public static void main(String[] args) {
     //     new TimetableUI();
     // }

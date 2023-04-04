@@ -107,8 +107,5 @@ public class CourseUI extends JFrame{
         }
     }
     
-    // public static void main(String[] args) {
-    //     CourseUI gui = new CourseUI("lo");
-    //     gui.setVisible(true);
-    // }
+   
 }

@@ -6,10 +6,14 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.sql.ResultSetMetaData;
 import java.text.ParseException;
 import java.util.*;
+
+import Controller.ScheduleController;
 
 
 public class ScheduleEntry {
@@ -21,6 +25,7 @@ public class ScheduleEntry {
     private String courseRoom ="";
     private String day;
     private String type = "";
+   
 
     private static String currentUsername;
     private static String url = "jdbc:mysql://localhost:3306/studentplannerdb";
@@ -39,8 +44,57 @@ public class ScheduleEntry {
         this.type = type;
         storeEntry();
     }
+    
+    public static List<String> getScheduleEntry(){
+        currentUsername = ScheduleController.getCurrentUser();
+        List<String> entries = new ArrayList<>();
+        String username = " where username= '"+currentUsername+"'";
+        try {
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/studentplannerdb", "root", "");
+            String sql = "SELECT * FROM schedule where username =?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, currentUsername);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String courseName = rs.getString("course_code");
+                String courseDay = rs.getString("day_of_week");
+                String courseStartTime = rs.getString("start_time");
+                String courseEndTime = rs.getString("end_time");
+                String entry =courseName+ " "+courseDay+" "+courseStartTime+" "+courseEndTime;
+                entries.add(entry);
+                
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        
+        return entries;
+    }
 
-
+    // public static void main(String[] args) {
+    //     getScheduleEntry();
+    // }
+    public static ArrayList<String[]> listCourseInfo(){
+        currentUsername = ScheduleController.getCurrentUser();
+        ArrayList<String[]> courseInfoList = new ArrayList<>();
+        String username = " where schedule.username= '"+currentUsername+"' group by start_time order by CASE WHEN day_of_week =  'Sunday' THEN 1 WHEN day_of_week= 'Monday' THEN 2 WHEN day_of_week= 'Tuesday' THEN 3 WHEN day_of_week= 'Wednesday' THEN 4 WHEN day_of_week= 'Thursday' THEN 5 WHEN day_of_week= 'Friday' THEN 6 WHEN day_of_week= 'Saturday' THEN 7 END ASC";
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery("Select schedule.course_code, courses.course_name, schedule.day_of_week, schedule.start_time, schedule.end_time, schedule.instructor, schedule.room, schedule.ctype  from schedule inner join courses on schedule.course_code= courses.course_code"+username)) {
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            int columns = metaData.getColumnCount();
+            while (resultSet.next()) {
+                String[] course = new String[columns];
+                for (int i = 1; i <= columns; i++) {
+                    course[i - 1] = resultSet.getString(i);
+                }
+                courseInfoList.add(course);
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return courseInfoList;
+    }
 
     public void storeEntry(){
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
@@ -59,6 +113,6 @@ public class ScheduleEntry {
         } catch (SQLException ex) {
             System.out.println(ex); 
         }
-
+        getScheduleEntry();
     }
 }

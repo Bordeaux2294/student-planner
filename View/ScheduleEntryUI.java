@@ -1,6 +1,7 @@
 package View;
 
 import Controller.ScheduleController;
+import Controller.CourseController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,41 +38,13 @@ public class ScheduleEntryUI extends JFrame {
 
     public ScheduleEntryUI(String currentUsername) {
         this.currentUsername = currentUsername;
-        try {
-            // Establish a connection to the database
-            String url = "jdbc:mysql://localhost:3306/studentplannerdb";
-            String username = "root";
-            String password = "";
-            Connection conn = DriverManager.getConnection(url, username, password);
+        List<String> values = listCourses(currentUsername);
+        // Create a DefaultComboBoxModel and pass in the list of values
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(values.toArray(new String[0]));
 
-            // Write a SQL query to retrieve the values
-            String sql = "SELECT course_code FROM courses where username = ?";
-
-            // Create a PreparedStatement object and execute the query
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setString(1, currentUsername);
-            ResultSet rs = stmt.executeQuery();
-
-            // Loop through the result set and add each value to a list
-            List<String> values = new ArrayList<>();
-            while (rs.next()) {
-                values.add(rs.getString("course_code"));
-            }
-
-            // Create a DefaultComboBoxModel and pass in the list of values
-            DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(values.toArray(new String[0]));
-
-            // Create a JComboBox and pass in the DefaultComboBoxModel
-            courseCodeComboBox = new JComboBox<>(model);
-            // Close the connection and statement objects
-            rs.close();
-            stmt.close();
-            conn.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-
-
+        // Create a JComboBox and pass in the DefaultComboBoxModel
+        courseCodeComboBox = new JComboBox<>(model);
+        
 
 
         setVisible(true);
@@ -252,6 +225,7 @@ public class ScheduleEntryUI extends JFrame {
                 ScheduleController scc = new ScheduleController(currentUsername);
                 scc.addEntry(courseCode, dayOfWeek, st, et, lecturer, room, type);
                 JOptionPane.showMessageDialog(null, "Data submitted successfully");
+
                 setVisible(false);
             }
              // Show a message dialog to indicate that the data has been submitted
@@ -260,9 +234,12 @@ public class ScheduleEntryUI extends JFrame {
     
     }
     
-
+    public static List<String> listCourses(String currentUsername){
+        CourseController scc = new CourseController(currentUsername);
+        return CourseController.listCourses();
+    }
     // public static void main(String[] args) {
-    //     ScheduleEntryUI gui = new ScheduleEntryUI();
+    //     ScheduleEntryUI gui = new ScheduleEntryUI("hel");
     //     gui.setVisible(true);
     // }
 }
