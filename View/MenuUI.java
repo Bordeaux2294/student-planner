@@ -107,7 +107,7 @@ public class MenuUI extends JFrame{
         // Create left panel
         JPanel leftpanel =new JPanel();
         leftpanel.setBackground(new Color(255, 228, 225)); // Light pink background
-        Font wFont = new Font("Garamond", Font.BOLD | Font.ITALIC, 15);
+        Font wFont = new Font("Garamond", Font.BOLD | Font.ROMAN_BASELINE, 15);
         JLabel welcome1 = new JLabel("Hello "+ currentUsername +"! Welcome to our Student Planner App" );
         welcome1.setAlignmentX(Component.CENTER_ALIGNMENT);
         welcome1.setFont(wFont);
@@ -207,7 +207,7 @@ public class MenuUI extends JFrame{
                 new LoginUI();
             }
             if (e.getSource()==viewCoursesMenuItem){
-                new CourseViewUI(currentUsername);
+                new ContainerUI();
             }
 
             if(e.getSource()==AddCourseMenuItem){
