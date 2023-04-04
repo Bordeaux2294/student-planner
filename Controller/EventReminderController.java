@@ -21,7 +21,7 @@ public class EventReminderController{
 
     public boolean addEvent(String eventName, Date startDateTime, Date endDateTime){
        
-        new Event(currentUsername, eventName, startDateTime, endDateTime);
+        new Event(currentUsername, eventName, startDateTime, endDateTime).storeEvent();;
        
         return true;
                 
@@ -29,7 +29,7 @@ public class EventReminderController{
 
     public boolean addReminder(Date datetime){
         int id = getlastEid();
-        new Reminder(id, datetime);
+        new Reminder(id, datetime).storeReminder();;
         return true;
     }
     public static JTable getevents(){

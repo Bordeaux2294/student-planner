@@ -1,3 +1,4 @@
+drop DATABASE `studentplannerdb`;
 CREATE DATABASE  IF NOT EXISTS `studentplannerdb`; 
 USE `studentplannerdb`;
 
@@ -66,6 +67,7 @@ INSERT INTO reminder (eid, datetime, rid) VALUES (14,'2023-06-01 02:00:00',5);
 INSERT INTO reminder (eid, datetime, rid) VALUES (14,'2023-06-01 02:00:00',6);
 INSERT INTO reminder (eid, datetime, rid) VALUES (15,'2023-08-01 00:00:00',7);
 
+<<<<<<< HEAD
 
 DROP TABLE IF EXISTS notes;
 CREATE TABLE notes(
@@ -77,4 +79,47 @@ CREATE TABLE notes(
   KEY username_fnote (username),
   CONSTRAINT username_fn FOREIGN KEY (username) REFERENCES users (username)
 )ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
+=======
+DROP TABLE IF EXISTS courses;
+CREATE TABLE courses(
+  username varchar(16) NOT NULL,
+  course_code varchar(20),
+  course_name varchar(50),
+  Constraint courses_pk Primary Key (username, course_code),
+  CONSTRAINT username_fkk FOREIGN KEY (username) REFERENCES users (username)
+);
+
+Insert into courses VALUES('ex','Comp2211','Analysis of Algorithms');
+Insert into courses VALUES ('ex','Info2180','Web dev 2');
+Insert into courses  VALUES ('ex', 'Math1354','Linear Algebra');
+Insert into courses VALUES ('lo','Comp2211','Analysis of Algorithms');
+Insert into courses VALUES('lo','Mgmt2001','Ethics for the Business World');
+Insert into courses VALUES('lo', 'Econ1005','Introduction to Statistics');
+Insert into courses VALUES('lo', 'Foun1014','Critical Reading and Writing');
+Insert into courses VALUES('hel','Comp2211','Analysis of Algorithms');
+Insert into courses VALUES('hel','Bioc1161','Anti-Doping in Sports');
+Insert into courses VALUES('hel', 'Foun1014','Critical Reading and Writing');
+
+DROP TABLE IF EXISTS schedule;
+CREATE TABLE schedule (
+  
+  scheduleid INT AUTO_INCREMENT,
+  username varchar(16) NOT NULL,
+  day_of_week VARCHAR(10) NOT NULL,
+  start_time TIME NOT NULL,
+  end_time TIME NOT NULL,
+  course_code VARCHAR(20) NOT NULL,
+  instructor VARCHAR(50),
+  room VARCHAR(20),
+  ctype varchar(15),
+  PRIMARY KEY (scheduleid),
+  CONSTRAINT username_fkkk FOREIGN KEY (username) REFERENCES users (username)
+);
+
+Insert into schedule VALUES (1,'lo','Monday','08:00','09:00','Comp2211','Coore','SLT2','Lecture');
+Insert into schedule VALUES (2,'lo','Tuesday','08:00','09:00','Mgmt2001','Markle','BLT1','Seminar');
+Insert into schedule VALUES (3,'lo','Monday','10:00','11:00','Comp2211','Baker','SLT3','Tutorial');
+Insert into schedule VALUES (4,'lo','Friday','14:00','15:00','Foun1014','Willis','LSSR','Lecture');
+Insert into schedule VALUES (5,'lo','Thursday','12:00','13:00','Econ1005','Cox','RDHKL','Lecture');
+>>>>>>> ea27c7e6c9acf90b025590f58d92382b43a2c37b
 

@@ -45,6 +45,7 @@ public class MenuUI extends JFrame{
     private JMenuItem viewCoursesMenuItem;
     private JMenuItem courseTimetableMenuItem;
     private JMenuItem LogoutMenuItem;
+    private JMenuItem AddCourseMenuItem;
 
     private JScrollPane scrollPane;
     private static JTable table;
@@ -84,15 +85,19 @@ public class MenuUI extends JFrame{
         courseTimetableMenuItem.addActionListener(new MenuItemListener());
         courseTimetableMenuItem.setBackground(new Color(255, 192, 203)); // Pink background
 
+        AddCourseMenuItem = new JMenuItem("Add Course");
+        AddCourseMenuItem.addActionListener(new MenuItemListener());
+        AddCourseMenuItem.setBackground(new Color(255, 215, 0)); // Yellow background
+
         LogoutMenuItem = new JMenuItem("Log Out");
         LogoutMenuItem.addActionListener(new MenuItemListener());
-        LogoutMenuItem.setBackground(new Color(255, 215, 0)); // Yellow background
-
+        LogoutMenuItem.setBackground(new Color(255, 192, 203));
         // Add menu items to the menu bar
         menubar.add(createEventMenuItem);
         menubar.add(pomodoroClockMenuItem);
         menubar.add(viewCoursesMenuItem);
         menubar.add(courseTimetableMenuItem);
+        menubar.add(AddCourseMenuItem);
         menubar.add(LogoutMenuItem);
 
         // Create right panel
@@ -102,7 +107,7 @@ public class MenuUI extends JFrame{
         // Create left panel
         JPanel leftpanel =new JPanel();
         leftpanel.setBackground(new Color(255, 228, 225)); // Light pink background
-        Font wFont = new Font("Garamond", Font.BOLD | Font.ITALIC, 15);
+        Font wFont = new Font("Garamond", Font.BOLD | Font.ROMAN_BASELINE, 15);
         JLabel welcome1 = new JLabel("Hello "+ currentUsername +"! Welcome to our Student Planner App" );
         welcome1.setAlignmentX(Component.CENTER_ALIGNMENT);
         welcome1.setFont(wFont);
@@ -200,6 +205,20 @@ public class MenuUI extends JFrame{
             if (e.getSource()==LogoutMenuItem){
                 Frame.dispose();
                 new LoginUI();
+            }
+            if (e.getSource()==viewCoursesMenuItem){
+                new ContainerUI();
+            }
+
+            if(e.getSource()==AddCourseMenuItem){
+                new CourseUI(currentUsername);
+            }
+            if(e.getSource()==courseTimetableMenuItem){
+                JPanel tt = new TimetableUI(currentUsername).DisplayTimeTable(Frame);
+                tt.setVisible(true);
+                Frame.getContentPane().removeAll();
+                Frame.getContentPane().revalidate();
+                Frame.setContentPane(tt);
             }
         
         }  

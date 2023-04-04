@@ -29,12 +29,22 @@ public class Event{
     private static String user = "root";
     private static String password = "Myaccess123.";
 
+
+public Event(int eid, String eventName, Date startDateTime, Date endDateTime, String status, String reminder){
+    this.eventID = eid;
+    this.startDateTime = startDateTime;
+    this.endDateTime = endDateTime;
+    this.eventName = eventName;
+    this.status = status;
+    this.setReminder = reminder;
+}
+
+
 public Event(String currentUsername, String eventName, Date startDateTime, Date endDateTime){
     Event.currentUsername=currentUsername;
     this.startDateTime = startDateTime;
     this.endDateTime = endDateTime;
     this.eventName = eventName;
-    storeEvent();
     return;
 }
 
@@ -42,7 +52,7 @@ public Event(String currentUsername, String eventName, Date startDateTime, Date 
     Object[] outer;
     currentUsername = EventReminderController.getCurrentUser();
     
-    DefaultTableModel model = new DefaultTableModel(new Object[]{"Event No."," Event Name", "Start Datetime", "End Datetime", "Status", "Reminder"},0);
+    DefaultTableModel model = new DefaultTableModel(new Object[]{"Ref No."," Event Name", "Start Datetime", "End Datetime", "Status", "Reminder"},0);
     JTable t = new JTable(model);
     t.setEnabled(false);
     
@@ -62,6 +72,7 @@ public Event(String currentUsername, String eventName, Date startDateTime, Date 
                 row.getString("edatetime"),
                 row.getString("status"),
                 row.getString("reminder")
+                
             };
             model.addRow(outer);
         }
@@ -113,4 +124,40 @@ public void storeEvent(){
 
    
 }
+
+
+public int getEventID() {
+    return eventID;
+}
+
+
+public String getStatus() {
+    return status;
+}
+
+
+public String getSetReminder() {
+    return setReminder;
+}
+
+
+public Date getStartDateTime() {
+    return startDateTime;
+}
+
+
+public Date getEndDateTime() {
+    return endDateTime;
+}
+
+
+public String getEventName() {
+    return eventName;
+}
+
+
+public static String getCurrentUsername() {
+    return currentUsername;
+}
+
 } 
