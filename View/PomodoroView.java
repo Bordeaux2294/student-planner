@@ -1,5 +1,3 @@
-package View;
-
 import javax.swing.*;
 
 import Controller.PomodoroController;
