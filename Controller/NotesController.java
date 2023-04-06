@@ -1,5 +1,7 @@
 package Controller;
 
+import java.util.ArrayList;
+
 import Model.Notes;
 
 /**
@@ -38,6 +40,9 @@ public class NotesController {
     /**
      * Retrieves a note from the database.
      * 
+     * @param noteID
+     *                 Int unique value which identifies the Notes object
+     * 
      * @param courseID
      *                 Course ID to which the note belongs to
      * @param username
@@ -46,9 +51,24 @@ public class NotesController {
      *         Notes object. Notes object will be empty if match is not found in the
      *         database
      */
-    public Notes getNote(int courseID, String username) {
+    public Notes getNote(int noteID, int courseID, String username) {
         Notes note = new Notes();
-        return note.getNote(courseID, username);
+        return note.getNote(noteID, courseID, username);
+    }
+
+    /**
+     * This method is used to get all the notes that exists for a particular course
+     * 
+     * @param courseID
+     *                 Int unique value to identify course
+     * @param username
+     *                 String the name of the person to which the account belongs to
+     * @return
+     *         ArrayList<Notes> a list of Notes objects that belongs to the course
+     */
+    public ArrayList<Notes> getAllNotesForCourse(int courseID, String username) {
+        Notes note = new Notes();
+        return note.getAllNotes(courseID, username);
     }
 
     /**

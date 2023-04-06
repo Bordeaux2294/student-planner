@@ -55,6 +55,9 @@ public class NotesUI extends JFrame {
                     }
                     loadingFrame.dispose();
                     JOptionPane.showMessageDialog(null, "Your note has been saved successfully.");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Cannot save an empty note!\nEnter some text.");
+
                 }
             }
         });
@@ -91,7 +94,7 @@ public class NotesUI extends JFrame {
      *                 the note belongs to. [SECURITY FEATURE - SEE 'WRITENOTEUI'
      *                 METHOD]
      */
-    public void displayNoteUI(int courseID, String username) {
+    public void displayNoteUI(int noteID, int courseID, String username) {
         setTitle("Your Note");
 
         JTextArea textArea = new JTextArea(20, 40);
@@ -100,7 +103,7 @@ public class NotesUI extends JFrame {
         loadingFrame.setVisible(true);
         Thread thread1 = new Thread(() -> {
             NotesController controller = new NotesController();
-            Notes note = controller.getNote(courseID, username);
+            Notes note = controller.getNote(noteID, courseID, username);
             textArea.setText(note.getText());
         });
 
@@ -124,7 +127,7 @@ public class NotesUI extends JFrame {
                     loadingFrame.setVisible(true); // set the JFrame to be visible
                     Thread thread = new Thread(() -> {
                         NotesController controller = new NotesController();
-                        Notes note = controller.getNote(courseID, username);
+                        Notes note = controller.getNote(noteID, courseID, username);
                         controller.updateNote(noteText, note);
                         textArea.setText(note.getText());
                     });
@@ -138,6 +141,9 @@ public class NotesUI extends JFrame {
                     }
                     loadingFrame.dispose();
                     JOptionPane.showMessageDialog(null, "Your note has been updated successfully.");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Cannot save an empty note!\nEnter some text.");
+
                 }
             }
         });
@@ -165,6 +171,7 @@ public class NotesUI extends JFrame {
     public static void main(String[] args) {
         NotesUI ui = new NotesUI();
         // ui.writeNoteUI(0, "hel");
-        ui.displayNoteUI(0, "hel");
+        ui.displayNoteUI(20, 0, "hel");
+        // ui.writeNoteUI(0, "hel");
     }
 }

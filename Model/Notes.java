@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
@@ -170,17 +171,24 @@ public class Notes {
      * Method will return an empty note if there were no results found in the
      * database
      * 
+     * @param noteID
+     *                 Int unique value to identify note in a specific course
+     * 
      * @param courseID
      *                 Int to which course the note belongs to
+     * @param username
+     *                 String name of the person to which the account belongs to
+     * 
      * @return
      *         Notes object that has all the updated attributes
      */
-    public Notes getNote(int courseID, String username) {
+    public Notes getNote(int noteID, int courseID, String username) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String sql = "SELECT * FROM notes WHERE courseID=? AND username=?";
+            String sql = "SELECT * FROM notes WHERE noteID=? AND courseID=? AND username=?";
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, courseID);
-            statement.setString(2, username);
+            statement.setInt(1, noteID);
+            statement.setInt(2, courseID);
+            statement.setString(3, username);
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
@@ -209,17 +217,52 @@ public class Notes {
         setText(updatedText);
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             // Insert note into the database
-            String sql = "UPDATE notes SET text=? WHERE courseID=? AND username=?";
+            String sql = "UPDATE notes SET text=? WHERE noteID=? AND courseID=? AND username=?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, getText());
-            statement.setInt(2, getCourseID());
-            statement.setString(3, getUsername());
+            statement.setInt(2, getNoteID());
+            statement.setInt(3, getCourseID());
+            statement.setString(4, getUsername());
             int rowsUpdated = statement.executeUpdate();
             System.out.println("Rows updated : " + rowsUpdated);
         } catch (SQLException ex) {
             System.out.println(ex);
         }
 
+    }
+
+    /**
+     * This method returns all the notes for a specific course
+     * 
+     * @param courseID
+     *                 Int unique value to identify course
+     * @param username
+     *                 String name of the person to which this account belongs to
+     * @return
+     *         ArrayList<Notes> a list of Notes objects
+     */
+    public ArrayList<Notes> getAllNotes(int courseID, String username) {
+        ArrayList<Notes> notes = new ArrayList<Notes>();
+        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+            String sql = "SELECT * FROM notes WHERE courseID=? AND username=?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, courseID);
+            statement.setString(2, username);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                Notes note = new Notes();
+                note.setText(result.getString("text"));
+                note.setCourse(result.getInt("courseID"));
+                note.setNoteID(result.getInt("noteID"));
+                note.setUsername(result.getString("username"));
+                System.out.println(result.getString("text"));
+                notes.add(note);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return notes;
     }
 
     @Override
