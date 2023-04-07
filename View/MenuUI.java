@@ -20,6 +20,7 @@ import javax.swing.table.TableColumnModel;
 
 import Controller.EventReminderController;
 import Controller.GradeCalculatorController;
+import Model.Course;
 
 import java.awt.Dimension;
 
@@ -52,6 +53,7 @@ public class MenuUI extends JFrame{
     private JMenuItem AddCourseMenuItem;
     private JMenuItem gradeCalcMenuItem;
     private JMenuItem HomeMenuItem;
+    private JMenuItem containerMenuItem;
 
     private JScrollPane scrollPane;
     private static JTable table;
@@ -87,17 +89,21 @@ public class MenuUI extends JFrame{
         pomodoroClockMenuItem.addActionListener(new MenuItemListener());
         pomodoroClockMenuItem.setBackground(new Color(255, 192, 203)); // Pink background
 
-        viewCoursesMenuItem = new JMenuItem("View Your Courses");
+        viewCoursesMenuItem = new JMenuItem("View Courses");
         viewCoursesMenuItem.addActionListener(new MenuItemListener());
         viewCoursesMenuItem.setBackground(new Color(255, 215, 0)); // Yellow background
 
+        containerMenuItem = new JMenuItem("Course Containers");
+        containerMenuItem.addActionListener(new MenuItemListener());
+        containerMenuItem.setBackground(new Color(255, 192, 203)); // Pink background
+
         courseTimetableMenuItem = new JMenuItem("Course Timetable");
         courseTimetableMenuItem.addActionListener(new MenuItemListener());
-        courseTimetableMenuItem.setBackground(new Color(255, 192, 203)); // Pink background
+        courseTimetableMenuItem.setBackground(new Color(255, 215, 0)); // Yellow background
 
         AddCourseMenuItem = new JMenuItem("Add Course");
         AddCourseMenuItem.addActionListener(new MenuItemListener());
-        AddCourseMenuItem.setBackground(new Color(255, 215, 0)); // Yellow background
+        AddCourseMenuItem.setBackground(new Color(255, 192, 203)); // Pink background
 
         gradeCalcMenuItem= new JMenuItem("Calculate Course Grade");
         gradeCalcMenuItem.addActionListener(new MenuItemListener());
@@ -106,7 +112,7 @@ public class MenuUI extends JFrame{
 
         LogoutMenuItem = new JMenuItem("Log Out");
         LogoutMenuItem.addActionListener(new MenuItemListener());
-        LogoutMenuItem.setBackground(new Color(255, 215, 0));
+        LogoutMenuItem.setBackground(new Color(255, 215, 0)); // Yellow background
 
         // Add menu items to the menu bar
         
@@ -114,6 +120,7 @@ public class MenuUI extends JFrame{
         menubar.add(createEventMenuItem);
         menubar.add(pomodoroClockMenuItem);
         menubar.add(viewCoursesMenuItem);
+        menubar.add(containerMenuItem);
         menubar.add(courseTimetableMenuItem);
         menubar.add(AddCourseMenuItem);
         menubar.add(gradeCalcMenuItem);
@@ -236,6 +243,9 @@ public class MenuUI extends JFrame{
                 new LoginUI();
             }
             if (e.getSource()==viewCoursesMenuItem){
+                new CourseInfoUI(currentUsername);
+            }
+            if (e.getSource()==containerMenuItem){
                 new ContainerUI();
             }
 

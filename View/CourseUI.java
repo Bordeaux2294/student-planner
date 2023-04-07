@@ -6,6 +6,8 @@ import Controller.CourseController;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.List;
+import java.util.ArrayList;
 
 public class CourseUI extends JFrame{
     private JLabel codeLabel;
@@ -14,6 +16,7 @@ public class CourseUI extends JFrame{
     private JTextField titleField;
     private JButton submitButton;
     private JButton cancelButton;
+    private List<String> courses;
 
 
     private String currentUsername;
@@ -81,14 +84,25 @@ public class CourseUI extends JFrame{
 
         
     }
+
+    public static List<String> listCourses(String currentUsername){
+        CourseController scc = new CourseController(currentUsername);
+        return CourseController.listCourses();
+    }
+
     class submitButtonActionListener implements ActionListener{
         // Get the values entered in the text fields
        public void actionPerformed(ActionEvent e){
+            List<String> courses = new ArrayList<>();
+            courses = listCourses(currentUsername);
             String courseCode = codeField.getText();
             String courseTitle = titleField.getText();
             if (courseCode.equals("") || courseTitle.equals("")){
                 JOptionPane.showMessageDialog(null, "These fields must be completed", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
+            }
+            if(courses.contains(courseCode)){
+                JOptionPane.showMessageDialog(null, "This course already exists", "Error", JOptionPane.ERROR_MESSAGE);
             }else{
                 CourseController cc = new CourseController(currentUsername);
                 cc.addCourse(courseTitle, courseCode);
