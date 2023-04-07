@@ -19,6 +19,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import Controller.EventReminderController;
+import Controller.GradeCalculatorController;
 
 import java.awt.Dimension;
 
@@ -31,6 +32,7 @@ import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.event.*;
 
 
@@ -39,13 +41,17 @@ public class MenuUI extends JFrame{
     
     private JMenuBar menubar;
     private JPanel eventpane;
-
+    private JPanel panel;
+    private JPanel rightpanel;
+    private JPanel leftpanel;
     private JMenuItem createEventMenuItem;
     private JMenuItem pomodoroClockMenuItem;
     private JMenuItem viewCoursesMenuItem;
     private JMenuItem courseTimetableMenuItem;
     private JMenuItem LogoutMenuItem;
     private JMenuItem AddCourseMenuItem;
+    private JMenuItem gradeCalcMenuItem;
+    private JMenuItem HomeMenuItem;
 
     private JScrollPane scrollPane;
     private static JTable table;
@@ -63,11 +69,15 @@ public class MenuUI extends JFrame{
         setPreferredSize(new Dimension(800, 600));
 
         // Create main panel
-        JPanel panel = new JPanel();
+        panel = new JPanel();
         panel.setBackground(new Color(255, 228, 225)); // Light pink background
         
         // Create menu bar and items
         menubar = new JMenuBar();
+       
+        HomeMenuItem = new JMenuItem("Home");
+        HomeMenuItem.addActionListener(new MenuItemListener());
+        HomeMenuItem.setBackground(new Color(255, 192, 203)); // Pink background
 
         createEventMenuItem = new JMenuItem("Add an Event");
         createEventMenuItem.addActionListener(new MenuItemListener());
@@ -89,23 +99,32 @@ public class MenuUI extends JFrame{
         AddCourseMenuItem.addActionListener(new MenuItemListener());
         AddCourseMenuItem.setBackground(new Color(255, 215, 0)); // Yellow background
 
+        gradeCalcMenuItem= new JMenuItem("Calculate Course Grade");
+        gradeCalcMenuItem.addActionListener(new MenuItemListener());
+        gradeCalcMenuItem.setBackground(new Color(255, 192, 203)); // Pink background
+
+
         LogoutMenuItem = new JMenuItem("Log Out");
         LogoutMenuItem.addActionListener(new MenuItemListener());
-        LogoutMenuItem.setBackground(new Color(255, 192, 203));
+        LogoutMenuItem.setBackground(new Color(255, 215, 0));
+
         // Add menu items to the menu bar
+        
+        menubar.add(HomeMenuItem);
         menubar.add(createEventMenuItem);
         menubar.add(pomodoroClockMenuItem);
         menubar.add(viewCoursesMenuItem);
         menubar.add(courseTimetableMenuItem);
         menubar.add(AddCourseMenuItem);
+        menubar.add(gradeCalcMenuItem);
         menubar.add(LogoutMenuItem);
 
         // Create right panel
-        JPanel rightpanel = new JPanel();
+        rightpanel = new JPanel();
         rightpanel.setBackground(new Color(255, 228, 225)); // Light pink background
        
         // Create left panel
-        JPanel leftpanel =new JPanel();
+        leftpanel =new JPanel();
         leftpanel.setBackground(new Color(255, 228, 225)); // Light pink background
         Font wFont = new Font("Garamond", Font.BOLD | Font.ROMAN_BASELINE, 15);
         JLabel welcome1 = new JLabel("Hello "+ currentUsername +"! Welcome to our Student Planner App" );
@@ -190,9 +209,19 @@ public class MenuUI extends JFrame{
 
     class MenuItemListener implements ActionListener{
         public void actionPerformed(ActionEvent e){ 
+            if(e.getSource()==HomeMenuItem){
+                Frame.getContentPane().removeAll();
+                Frame.getContentPane().revalidate();
+                Frame.setJMenuBar(menubar);
+                panel.add(leftpanel);
+                panel.add(rightpanel);
+                panel.add(eventpane);
+                Frame. setContentPane(panel);
+            }
+        
             if(e.getSource()==createEventMenuItem){
 
-                System.out.println("true");
+             
                 JPanel EventForm = new CalendarUI(currentUsername).DisplayEventForm(Frame);
                 EventForm.setVisible(true);
                 Frame.getContentPane().removeAll();
@@ -219,6 +248,16 @@ public class MenuUI extends JFrame{
                 Frame.getContentPane().removeAll();
                 Frame.getContentPane().revalidate();
                 Frame.setContentPane(tt);
+            }
+            if (e.getSource()==gradeCalcMenuItem){
+                CalculatorUI window = new CalculatorUI();
+                GradeCalculatorController gc = new GradeCalculatorController(window);
+                window.frame.setVisible(true);
+
+                Frame.getContentPane().removeAll();
+                Frame.getContentPane().revalidate();
+                Frame.setContentPane(window.frame);
+                
             }
         
         }  

@@ -76,7 +76,7 @@ public class CourseUI extends JFrame{
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
-     
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 
         

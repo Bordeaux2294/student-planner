@@ -41,9 +41,9 @@ public class PomodoroUI implements ActionListener{
                     }
                     start();
                 }
-               if (resetnum == pomodoro ){
-                System.out.println("resetnum");
+               if (resetnum == pomodoro){
                    reset();
+                   startButton.setText("START");
                 }
                 seconds_string = String.format("%02d",seconds);
                 minutes_string = String.format("%02d",minutes);
@@ -126,7 +126,7 @@ public class PomodoroUI implements ActionListener{
             }
 
     public void  stop(){
-        timer.stop();;
+        timer.stop();
     }
 
     public void reset(){

@@ -135,21 +135,21 @@ public class CalendarUI {
         addButton.addActionListener(new AddButtonListener());
         panel.add(addButton, constraints);
 
-        // Add a button to go back to previous window
-        constraints.gridx = 0;
-        constraints.gridy = 6;
-        constraints.gridwidth = 7;
-        closeButton = new JButton(" < Back");
-        closeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (e.getSource()==closeButton) {
-                       F.dispose();
-                       new MenuUI(currentUsername);
-                } 
-            }
-        });
-        panel.add(closeButton, constraints);
+        // // Add a button to go back to previous window
+        // constraints.gridx = 0;
+        // constraints.gridy = 6;
+        // constraints.gridwidth = 7;
+        // closeButton = new JButton(" < Back");
+        // closeButton.addActionListener(new ActionListener() {
+        //     @Override
+        //     public void actionPerformed(ActionEvent e) {
+        //         if (e.getSource()==closeButton) {
+        //                F.dispose();
+        //                new MenuUI(currentUsername);
+        //         } 
+        //     }
+        // });
+        // panel.add(closeButton, constraints);
       
         // Add the panel to the JFrame and make it visible
         return panel;
