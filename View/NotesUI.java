@@ -59,6 +59,7 @@ public class NotesUI extends JFrame {
                     JOptionPane.showMessageDialog(null, "Cannot save an empty note!\nEnter some text.");
 
                 }
+                dispose();
             }
         });
 
@@ -145,6 +146,7 @@ public class NotesUI extends JFrame {
                     JOptionPane.showMessageDialog(null, "Cannot save an empty note!\nEnter some text.");
 
                 }
+                dispose();
             }
         });
 

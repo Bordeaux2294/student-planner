@@ -1,38 +1,38 @@
+package View;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
+import Controller.NotesController;
+
 import java.util.*;
 
-
 //Add Databse to save current course containers which will update when a course container is deleted
-public class ContainerUI extends JPanel{
+public class ContainerUI extends JPanel {
 
     private JPanel addcontainerpnl;
     private JTextField courseNameField;
     private JTextField courseCodeField;
     private ArrayList<courseContainer> courseContainers;
     private JPanel courseListPanel;
-   
-
-
 
     private JLabel InstructionsLabel;
 
     private JButton addButton;
     private JButton deleteButton;
-    
 
-    public ContainerUI(){
-        //thisRef = this;   
+    public ContainerUI() {
+        // thisRef = this;
         courseContainers = new ArrayList<>();
         addcontainerpnl = new JPanel();
-        addcontainerpnl.setPreferredSize(new Dimension(370,350));
+        addcontainerpnl.setPreferredSize(new Dimension(370, 350));
 
-        //JPanel courseListPanel = new JPanel();
+        // JPanel courseListPanel = new JPanel();
 
-        //courseContainer sampleContainer = new courseContainer("Sample Container", "Sample Course");
-        //addC(sampleContainer);
-
+        // courseContainer sampleContainer = new courseContainer("Sample Container",
+        // "Sample Course");
+        // addC(sampleContainer);
 
         JLabel courseNameLabel = new JLabel("Course Name:");
         courseNameField = new JTextField(20);
@@ -45,48 +45,39 @@ public class ContainerUI extends JPanel{
         JPanel courseCodePanel = new JPanel();
         courseCodePanel.add(coursecodeLabel);
         courseCodePanel.add(courseCodeField);
-        
-        JButton  cmdClose = new JButton("Close");
+
+        JButton cmdClose = new JButton("Close");
         JPanel closePanel = new JPanel();
         closePanel.add(cmdClose);
 
         JButton viewButton = new JButton("View");
 
         JButton addNotesButton = new JButton("Add Notes");
-        
-        
 
-        //JPanel courseListPanel = new JPanel();
+        // JPanel courseListPanel = new JPanel();
         courseListPanel = new JPanel();
 
         courseListPanel.setLayout(new BoxLayout(courseListPanel, BoxLayout.Y_AXIS));
-        
 
-        //Main Panel
+        // Main Panel
         setLayout(new BorderLayout());
         addcontainerpnl.setBackground(Color.decode("#211e1c"));
-        
 
-        //Label
+        // Label
         InstructionsLabel = new JLabel("FILL IN COURSE INFORMATION", SwingConstants.CENTER);
         InstructionsLabel.setBackground(Color.decode("#6bdd70"));
-        
 
-
-        //Button Panel
+        // Button Panel
         addButton = new JButton("Add Container");
         deleteButton = new JButton("Delete Container");
         viewButton = new JButton("View Containers");
-       
 
-        //Button Colour 
-        addButton.setBackground(Color.decode("#00ccff")); 
+        // Button Colour
+        addButton.setBackground(Color.decode("#00ccff"));
         deleteButton.setBackground(Color.decode("#ffff66"));
         cmdClose.setBackground(Color.decode("#e25e54"));
         viewButton.setBackground(Color.decode("#6C5D85"));
         addNotesButton.setBackground(Color.decode("#F8BCBF"));
-        
-        
 
         // Button listeners
         addButton.addActionListener(new addlistener());
@@ -94,65 +85,61 @@ public class ContainerUI extends JPanel{
         cmdClose.addActionListener(new CloseListener());
         viewButton.addActionListener(new ViewListener());
         addNotesButton.addActionListener(new AddNotesListener());
-        
-
 
         addcontainerpnl.add(InstructionsLabel);
         addcontainerpnl.add(courseNamePanel);
         addcontainerpnl.add(courseCodePanel);
-        
-        //addcontainerpnl.add(viewPanel);
 
-        addcontainerpnl.add(addButton);   
+        // addcontainerpnl.add(viewPanel);
+
+        addcontainerpnl.add(addButton);
         addcontainerpnl.add(viewButton);
         addcontainerpnl.add(deleteButton);
         addcontainerpnl.add(addNotesButton);
 
         addcontainerpnl.setBackground(Color.decode("#d9d9d9"));
         closePanel.setBackground(Color.decode("#d9d9d9"));
-        
 
         add(InstructionsLabel, BorderLayout.NORTH);
         add(addcontainerpnl, BorderLayout.CENTER);
         add(courseListPanel, BorderLayout.NORTH);
         add(closePanel, BorderLayout.SOUTH);
-        
 
     }
 
-    
-
-    //Action Listeners
-    private class addlistener implements ActionListener{
+    // Action Listeners
+    private class addlistener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            
+
             String courseName = courseNameField.getText();
-            String courseCode= courseCodeField.getText();
+            String courseCode = courseCodeField.getText();
 
             if (courseName.isEmpty() || courseCode.isEmpty()) {
-                JOptionPane.showMessageDialog(addcontainerpnl, "Please enter a course name and a container name.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(addcontainerpnl, "Please enter a course name and a container name.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
             for (courseContainer container : courseContainers) {
-                if ((container.getCourseName().equals(courseName))&& (container.getCode()).equals(courseCode)) {
-                    JOptionPane.showMessageDialog(addcontainerpnl, "A course container with the same name already exists.", "Error", JOptionPane.ERROR_MESSAGE);
+                if ((container.getCourseName().equals(courseName)) && (container.getCode()).equals(courseCode)) {
+                    JOptionPane.showMessageDialog(addcontainerpnl,
+                            "A course container with the same name already exists.", "Error",
+                            JOptionPane.ERROR_MESSAGE);
                     return;
                 }
             }
 
-            
             ContainerUI.courseContainer cContainer = new courseContainer(courseCode, courseName);
             courseContainers.add(cContainer);
             courseNameField.setText("");
             courseCodeField.setText("");
             JOptionPane.showMessageDialog(addcontainerpnl, "Course container created for " + courseName);
         }
-    }    
+    }
 
-    private class deleteListener implements ActionListener{
+    private class deleteListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            //String containerName = courseCodeField.getText();
+            // String containerName = courseCodeField.getText();
             String courseName = courseNameField.getText();
 
             courseContainer container = findCourseContainer(courseName);
@@ -165,22 +152,18 @@ public class ContainerUI extends JPanel{
         }
     }
 
-
-
-    
-    
-
     class ViewListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             // Clear the existing content of the courseListPanel
             courseListPanel.removeAll();
-    
-            // Loop through the list of added course containers and add them to the courseListPanel
+
+            // Loop through the list of added course containers and add them to the
+            // courseListPanel
             for (int i = 0; i < courseContainers.size(); i++) {
                 courseContainer container = courseContainers.get(i);
-                //JLabel courseNameLabel = new JLabel(container.getCourseName());
+                // JLabel courseNameLabel = new JLabel(container.getCourseName());
                 JLabel containerNameLabel = new JLabel(container.getCourseName());
-                //courseListPanel.add(courseNameLabel);
+                // courseListPanel.add(courseNameLabel);
                 courseListPanel.add(containerNameLabel);
                 courseListPanel.add(Box.createRigidArea(new Dimension(0, 10)));
             }
@@ -190,39 +173,60 @@ public class ContainerUI extends JPanel{
             JFrame frame = new JFrame("Course Containers");
             frame.getContentPane().add(scrollPane);
             frame.pack();
-            frame.setVisible(true); 
+            frame.setVisible(true);
             // Refresh the courseListPanel with the new content
             courseListPanel.revalidate();
             courseListPanel.repaint();
         }
 
-    }  
- 
+    }
+
     private class AddNotesListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            
-    
+            NotesUI ui = new NotesUI();
+            if (courseNameField.getText().compareToIgnoreCase("") != 0) {
+                for (courseContainer container : courseContainers) {
+                    if (container.getCourseName().compareToIgnoreCase(courseNameField.getText()) == 0) {
+                        int index = courseContainers.indexOf(container);
+                        ui.writeNoteUI(index, "hel");
+                        return;
+                    }
+                }
+            } else if (courseCodeField.getText().compareToIgnoreCase("") != 0) {
+                for (courseContainer container : courseContainers) {
+                    if (container.getCode().compareToIgnoreCase(courseCodeField.getText()) == 0) {
+                        int index = courseContainers.indexOf(container);
+                        ui.writeNoteUI(index, "hel");
+                        return;
+                    }
+                }
+            } else {
+                ui.writeNoteUI(0, "hel");
+            }
         }
     }
-    /* 
-    courseContainer container = findCourseContainer(courseName);
-    String courseName = courseNameField.getText();
-    if (container != null) {
-        String note = JOptionPane.showInputDialog(addcontainerpnl, "Enter notes for " + courseName);
-        if (note != null) {
-            container.addNotes(note);
-            JOptionPane.showMessageDialog(addcontainerpnl, "Notes added for " + courseName);
-        }
-    } else {
-        JOptionPane.showMessageDialog(ContainerUI.this, "Course container not found: " + courseName);
-    }
-    */
-    private class CloseListener implements ActionListener{
-        public void actionPerformed(ActionEvent e){
+
+    /*
+     * courseContainer container = findCourseContainer(courseName);
+     * String courseName = courseNameField.getText();
+     * if (container != null) {
+     * String note = JOptionPane.showInputDialog(addcontainerpnl, "Enter notes for "
+     * + courseName);
+     * if (note != null) {
+     * container.addNotes(note);
+     * JOptionPane.showMessageDialog(addcontainerpnl, "Notes added for " +
+     * courseName);
+     * }
+     * } else {
+     * JOptionPane.showMessageDialog(ContainerUI.this,
+     * "Course container not found: " + courseName);
+     * }
+     */
+    private class CloseListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
             System.exit(0);
         }
     }
-   
 
     private courseContainer findCourseContainer(String courseName) {
         for (courseContainer container : courseContainers) {
@@ -235,15 +239,14 @@ public class ContainerUI extends JPanel{
 
     public void getNote(ArrayList<Note> noteList) {
         String message = "Select a note to view:";
-    
+
         String[] noteTitles = new String[noteList.size()];
         for (int i = 0; i < noteList.size(); i++) {
             noteTitles[i] = noteList.get(i).getTitle();
         }
-    
+
         String selectedNoteTitle = (String) JOptionPane.showInputDialog(this, message, "View Note",
                 JOptionPane.PLAIN_MESSAGE, null, noteTitles, noteTitles[0]);
-    
 
         for (Note note : noteList) {
             if (note.getTitle().equals(selectedNoteTitle)) {
@@ -254,50 +257,43 @@ public class ContainerUI extends JPanel{
         }
     }
 
-
     class courseContainer {
         private String courseCode;
         private String courseName;
-        //private String note;
+        // private String note;
         private ArrayList<Note> notes;
 
-
-        
-    
         public courseContainer(String courseCode, String courseName) {
             this.courseCode = courseCode;
             this.courseName = courseName;
             notes = new ArrayList<>();
-            
-            
+
         }
-    
+
         public String getCode() {
             return courseCode;
         }
-    
+
         public String getCourseName() {
             return courseName;
         }
 
         public void addNotes(Note note) {
-            //courseContainer.addNotes(note);
+            // courseContainer.addNotes(note);
             notes.add(note);
         }
-    
-       
+
     }
 
-    class Note{
+    class Note {
         private String courseCode;
         private String noteContent;
         private String Title;
 
-        public Note(String noteContent, String courseCode){
+        public Note(String noteContent, String courseCode) {
             this.noteContent = noteContent;
-            this.courseCode= courseCode;
-            //Note myNote = new Note("Some note text");
-            
+            this.courseCode = courseCode;
+            // Note myNote = new Note("Some note text");
 
         }
 
@@ -308,25 +304,14 @@ public class ContainerUI extends JPanel{
         public String getContent() {
             return this.noteContent;
         }
+
         public String getCourseCode() {
             return this.courseCode;
         }
 
     }
 
-
-    
-
-    
-   
-    
-
-
-
-
-
-
-    ////Driver
+    //// Driver
     public static void main(String[] args) {
         JFrame frame = new JFrame("ADD COURSE CONTAINER");
 
