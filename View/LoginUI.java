@@ -3,6 +3,7 @@ package View;
 import javax.swing.*;
 
 import Controller.AccountController;
+import Controller.EventReminderController;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -17,6 +18,7 @@ public class LoginUI extends JFrame implements ActionListener {
     private JButton close;
     private JButton signup;
     private JLabel errorLabel;
+    private static Thread schedulerThread;
 
     public LoginUI() {
         setTitle(" Student Planner Login page");
@@ -180,7 +182,34 @@ public class LoginUI extends JFrame implements ActionListener {
         }
     }
 
-    public static void main(String[] args) {
+    public static Thread getSchedulerThread() {
+        return schedulerThread;
+    }
+
+    
+
+    public static void main(String[] args) throws AWTException, InterruptedException{
         new LoginUI();
+        schedulerThread = new Thread(new Runnable() {
+            public void run() {
+                while (!Thread.currentThread().isInterrupted()) {
+                    try {
+                        EventReminderController.getscheduledReminders();
+                        Thread.sleep(1000); // wait for 1 second before running again
+                    } catch (InterruptedException e) {
+                        // Thread was interrupted, exit the loop
+                        break;
+                    } catch (AWTException e) {
+                        System.err.println("Error creating system tray icon: " + e.getMessage());
+                    }
+                }
+            }
+        });
+
+        // Start the schedulerThread
+        schedulerThread.start();
+
+        // Your main program logic continues here
     }
 }
+

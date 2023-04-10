@@ -25,9 +25,7 @@ public class Event{
     
     
     private static String currentUsername;
-    private static String url = "jdbc:mysql://localhost:3306/studentplannerdb";
-    private static String user = "root";
-    private static String password = "Myaccess123. ";
+ 
 
 
 public Event(int eid, String eventName, Date startDateTime, Date endDateTime, String status, String reminder){
@@ -56,7 +54,7 @@ public Event(String currentUsername, String eventName, Date startDateTime, Date 
     JTable t = new JTable(model);
     t.setEnabled(false);
     
-    try (Connection connection = DriverManager.getConnection(url, user, password)) {
+    try (Connection connection = DriverManager.getConnection(User.getUrl(), User.getUser(), User.getPword())) {
         // Select the events from the database
         String sql = "SELECT eid, ename, sdatetime, edatetime, status, reminder FROM events WHERE username = ?";
         PreparedStatement statement = connection.prepareStatement(sql);
@@ -86,7 +84,7 @@ public Event(String currentUsername, String eventName, Date startDateTime, Date 
     
     int id=0;
 
-    try (Connection connection = DriverManager.getConnection(url, user, password)) {
+    try (Connection connection = DriverManager.getConnection(User.getUrl(), User.getUser(), User.getPword())) {
         // Insert the reminder into the database
         String sql = "SELECT * FROM events ORDER BY eid DESC LIMIT 1;";
         PreparedStatement statement = connection.prepareStatement(sql);
@@ -108,7 +106,7 @@ public Event(String currentUsername, String eventName, Date startDateTime, Date 
 
 public void storeEvent(){
        // Create a connection to the MySQL database    
-        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+        try (Connection connection = DriverManager.getConnection(User.getUrl(), User.getUser(), User.getPword())) {
             // Insert the reminder into the database
             String sql = "INSERT INTO events (username, ename, sdatetime, edatetime) VALUES (?,?,?,?)";
             PreparedStatement statement = connection.prepareStatement(sql);

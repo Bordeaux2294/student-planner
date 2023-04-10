@@ -8,9 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
-import java.sql.Timestamp;
 import java.sql.ResultSetMetaData;
-import java.text.ParseException;
 import java.util.*;
 
 import Controller.ScheduleController;
@@ -28,9 +26,7 @@ public class ScheduleEntry {
    
 
     private static String currentUsername;
-    private static String url = "jdbc:mysql://localhost:3306/studentplannerdb";
-    private static String user = "root";
-    private static String password = "";
+
 
 
     public ScheduleEntry(String currentUsername, String courseTitle, String day, Time classStartTime, Time classEndTime, String lecturer, String courseRoom, String type){
@@ -48,7 +44,7 @@ public class ScheduleEntry {
     public static List<String> getScheduleEntry(){
         currentUsername = ScheduleController.getCurrentUser();
         List<String> entries = new ArrayList<>();
-        String username = " where username= '"+currentUsername+"'";
+        // String username = " where username= '"+currentUsername+"'";
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/studentplannerdb", "root", "");
             String sql = "SELECT * FROM schedule where username =?";
@@ -78,7 +74,7 @@ public class ScheduleEntry {
         currentUsername = ScheduleController.getCurrentUser();
         ArrayList<String[]> courseInfoList = new ArrayList<>();
         String username = " where schedule.username= '"+currentUsername+"' group by start_time order by CASE WHEN day_of_week =  'Sunday' THEN 1 WHEN day_of_week= 'Monday' THEN 2 WHEN day_of_week= 'Tuesday' THEN 3 WHEN day_of_week= 'Wednesday' THEN 4 WHEN day_of_week= 'Thursday' THEN 5 WHEN day_of_week= 'Friday' THEN 6 WHEN day_of_week= 'Saturday' THEN 7 END ASC";
-        try (Connection connection = DriverManager.getConnection(url, user, password);
+        try (Connection connection = DriverManager.getConnection(User.getUrl(), User.getUser(), User.getPword());
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery("Select schedule.course_code, courses.course_name, schedule.day_of_week, schedule.start_time, schedule.end_time, schedule.instructor, schedule.room, schedule.ctype  from schedule inner join courses on schedule.course_code= courses.course_code"+username)) {
             ResultSetMetaData metaData = resultSet.getMetaData();
@@ -97,7 +93,7 @@ public class ScheduleEntry {
     }
 
     public void storeEntry(){
-        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+        try (Connection connection = DriverManager.getConnection(User.getUrl(), User.getUser(), User.getPword())) {
             // Insert the reminder into the database
             String sql = "INSERT INTO schedule (username, day_of_week, start_time, end_time, course_code, instructor, room, ctype) VALUES (?,?,?,?,?,?,?,?)";
             PreparedStatement statement = connection.prepareStatement(sql);

@@ -1,23 +1,15 @@
 package Model;
 
 import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.awt.datatransfer.FlavorListener;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
+
 
 public class User {
     private String currentUsername = "";
 
-    public User() {
-    }
-
-    private String url = "jdbc:mysql://localhost:3306/studentplannerdb";
-    private String user = "root";
-    private String pword = ""; // "Myaccess123."
-
+    private static String url = "jdbc:mysql://localhost:3306/studentplannerdb";
+    private static String user = "root";
+    private static String pword =  "Myaccess123.";
+    public User(){}
     public User(String username, String password) {
 
         if (checkUser(username) == false) {
@@ -79,6 +71,18 @@ public class User {
 
     public String getCurrentUsername() {
         return currentUsername;
+    }
+
+    public static String getUrl() {
+        return url;
+    }
+
+    public static String getUser() {
+        return user;
+    }
+
+    public static String getPword() {
+        return pword;
     }
 
 }

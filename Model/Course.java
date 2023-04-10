@@ -7,9 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.sql.ResultSetMetaData;
-import java.text.ParseException;
 import java.util.*;
 
 import Controller.CourseController;
@@ -21,9 +19,7 @@ public class Course {
     private ArrayList<String[]> courseList;
 
     private static String currentUsername;
-    private static String url = "jdbc:mysql://localhost:3306/studentplannerdb";
-    private static String user = "root";
-    private static String password = "";
+
     public Course(){
 
     }
@@ -43,7 +39,7 @@ public class Course {
         currentUsername = CourseController.getCurrentUser();
         ArrayList<String[]> courseList = new ArrayList<>();
         String username = " where username = '"+currentUsername+"'";
-        try (Connection connection = DriverManager.getConnection(url, user, password);
+        try (Connection connection = DriverManager.getConnection(User.getUrl(), User.getUser(), User.getPword());
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery("SELECT course_code, course_name FROM courses"+username)) {
             ResultSetMetaData metaData = resultSet.getMetaData();
@@ -65,7 +61,7 @@ public class Course {
         currentUsername = CourseController.getCurrentUser();
         List<String> courseList = new ArrayList<>();
         try {
-            Connection conn = DriverManager.getConnection(url, user, password);
+            Connection conn = DriverManager.getConnection(User.getUrl(), User.getUser(), User.getPword());
 
             // Write a SQL query to retrieve the values
             String sql = "SELECT course_code FROM courses where username = ?";
@@ -97,7 +93,7 @@ public class Course {
     
 
     public void storeCourse(){
-        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+        try (Connection connection =DriverManager.getConnection(User.getUrl(), User.getUser(), User.getPword())) {
             // Insert the reminder into the database
             String sql = "INSERT INTO courses (username, course_code, course_name) VALUES (?,?,?)";
             PreparedStatement statement = connection.prepareStatement(sql);

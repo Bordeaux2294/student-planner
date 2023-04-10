@@ -4,6 +4,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 
@@ -45,6 +46,7 @@ public class CalculatorUI{
 		frame = new JPanel();
 		frame.setBounds(100, 100, 754, 560);
 		frame.setLayout(null);
+		frame.setBackground(new Color(255, 233, 225));
 		
 		JLabel GradeCalculatorLabel = new JLabel("Grade Calculator");
 		GradeCalculatorLabel.setFont(new Font("Arial", Font.BOLD, 20));
@@ -58,11 +60,13 @@ public class CalculatorUI{
 		frame.add(Information_panel);
 		Information_panel.setLayout(null);
 		
+		
 		JLabel Assignment_Label = new JLabel("Assignment");
 		Assignment_Label.setBounds(10, 49, 82, 18);
 		Assignment_Label.setHorizontalAlignment(SwingConstants.LEFT);
 		Assignment_Label.setFont(new Font("Arial", Font.BOLD, 15));
 		Information_panel.add(Assignment_Label);
+		Information_panel.setBackground(new Color(255, 233, 225));
 		
 		Assignment_textField = new JTextField();
 		Assignment_textField.setFont(new Font("Arial", Font.PLAIN, 11));
@@ -124,6 +128,7 @@ public class CalculatorUI{
 				"Assignment", "Grade(%)", "Weight"
 			}
 		));
+		Table_Grade.setBackground(Color.orange);
 		
 		JLabel AverageGrade_Label = new JLabel("Average Grade:");
 		AverageGrade_Label.setFont(new Font("Arial", Font.BOLD, 15));

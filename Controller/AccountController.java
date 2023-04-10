@@ -4,7 +4,7 @@ import Model.User;
 
 public class AccountController {
 
-    User currentUser;
+    private User currentUser;
 
     public AccountController(){}
 

@@ -80,12 +80,12 @@ public class MenuUI extends JFrame{
         HomeMenuItem = new JMenuItem("Home");
         HomeMenuItem.addActionListener(new MenuItemListener());
         HomeMenuItem.setBackground(new Color(255, 192, 203)); // Pink background
-
+       
         createEventMenuItem = new JMenuItem("Add an Event");
         createEventMenuItem.addActionListener(new MenuItemListener());
         createEventMenuItem.setBackground(new Color(255, 215, 0)); // Yellow background
 
-        pomodoroClockMenuItem = new JMenuItem("Start Pomodoro Session");
+        pomodoroClockMenuItem = new JMenuItem("Pomodoro Session");
         pomodoroClockMenuItem.addActionListener(new MenuItemListener());
         pomodoroClockMenuItem.setBackground(new Color(255, 192, 203)); // Pink background
 
@@ -97,7 +97,7 @@ public class MenuUI extends JFrame{
         containerMenuItem.addActionListener(new MenuItemListener());
         containerMenuItem.setBackground(new Color(255, 192, 203)); // Pink background
 
-        courseTimetableMenuItem = new JMenuItem("Course Timetable");
+        courseTimetableMenuItem = new JMenuItem("Timetable");
         courseTimetableMenuItem.addActionListener(new MenuItemListener());
         courseTimetableMenuItem.setBackground(new Color(255, 215, 0)); // Yellow background
 
@@ -105,14 +105,14 @@ public class MenuUI extends JFrame{
         AddCourseMenuItem.addActionListener(new MenuItemListener());
         AddCourseMenuItem.setBackground(new Color(255, 192, 203)); // Pink background
 
-        gradeCalcMenuItem= new JMenuItem("Calculate Course Grade");
+        gradeCalcMenuItem= new JMenuItem("Grade Calculator");
         gradeCalcMenuItem.addActionListener(new MenuItemListener());
-        gradeCalcMenuItem.setBackground(new Color(255, 192, 203)); // Pink background
+        gradeCalcMenuItem.setBackground(new Color(255, 215, 0)); // Pink background
 
 
         LogoutMenuItem = new JMenuItem("Log Out");
         LogoutMenuItem.addActionListener(new MenuItemListener());
-        LogoutMenuItem.setBackground(new Color(255, 215, 0)); // Yellow background
+        LogoutMenuItem.setBackground(new Color(255, 192, 203)); // Yellow background
 
         // Add menu items to the menu bar
         
@@ -128,11 +128,11 @@ public class MenuUI extends JFrame{
 
         // Create right panel
         rightpanel = new JPanel();
-        rightpanel.setBackground(new Color(255, 228, 225)); // Light pink background
+        rightpanel.setBackground(new Color(255, 233, 225)); // Light pink background
        
         // Create left panel
         leftpanel =new JPanel();
-        leftpanel.setBackground(new Color(255, 228, 225)); // Light pink background
+        leftpanel.setBackground(new Color(255, 233, 225)); // Light pink background
         Font wFont = new Font("Garamond", Font.BOLD | Font.ROMAN_BASELINE, 15);
         JLabel welcome1 = new JLabel("Hello "+ currentUsername +"! Welcome to our Student Planner App" );
         welcome1.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -151,7 +151,7 @@ public class MenuUI extends JFrame{
 
         // Create event panel
         eventpane = new JPanel();
-        eventpane.setBackground(new Color(255, 228, 225)); // Light pink background
+        eventpane.setBackground(new Color(255, 233, 225)); // Light pink background
         eventpane.setLayout(new BorderLayout());
         eventpane.setBounds(200, 1, 1000, 800);
 
@@ -172,10 +172,13 @@ public class MenuUI extends JFrame{
         table.getTableHeader().setBackground(new Color(255, 192, 203)); // Pink background
         table.setRowHeight(20);
         table.setFillsViewportHeight(true);
-        setColumnWidths(table, new int[] { 100, 100, 150, 150, 100,100 });
         table.setIntercellSpacing(new Dimension(0, 0));
         table.setShowGrid(false);
-    
+
+        TableColumnModel columnModel = table.getColumnModel();
+        columnModel.getColumn(1).setPreferredWidth(100);
+        columnModel.getColumn(2).setPreferredWidth(150);
+        columnModel.getColumn(3).setPreferredWidth(150);
         // Add table to scroll pane
         scrollPane = new JScrollPane(table);
         eventpane.add(scrollPane, BorderLayout.CENTER);
@@ -183,7 +186,7 @@ public class MenuUI extends JFrame{
         // Add left and right panels to main panel
         panel.setLayout(new GridLayout(2, 5));
         panel.add(leftpanel);
-        panel.add(rightpanel);
+        // panel.add(rightpanel);
         panel.add(eventpane);
         
 
@@ -197,15 +200,15 @@ public class MenuUI extends JFrame{
         setVisible(true);
     }
     
-    private void setColumnWidths(JTable t, int[] widths) {
-        TableColumnModel columnModel = t.getColumnModel();
-        for (int i = 0; i < widths.length; i++) {
-            TableColumn column = columnModel.getColumn(i);
-            column.setPreferredWidth(widths[i]);
-            column.setMaxWidth(widths[i]);
-            column.setMinWidth(widths[i]);
-        }
-    }
+    // private void setWidths(JTable t, int[] widths) {
+    //     TableColumnModel columnModel = t.getColumnModel();
+    //     for (int i = 0; i < widths.length; i++) {
+    //         TableColumn column = columnModel.getColumn(i);
+    //         column.setPreferredWidth(widths[i]);
+    //         column.setMaxWidth(widths[i]);
+    //         column.setMinWidth(widths[i]);
+    //     }
+    // }
     public static JTable loadEventTable(){
         return EventReminderController.getevents();
         
@@ -221,7 +224,7 @@ public class MenuUI extends JFrame{
                 Frame.getContentPane().revalidate();
                 Frame.setJMenuBar(menubar);
                 panel.add(leftpanel);
-                panel.add(rightpanel);
+                // panel.add(rightpanel);
                 panel.add(eventpane);
                 Frame. setContentPane(panel);
             }
