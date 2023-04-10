@@ -11,8 +11,7 @@ public class PomodoroUI implements ActionListener{
     JButton resetButton = new JButton("RESET");
     JButton enterButton = new JButton("ENTER");
     static JTextField textField = new JTextField();
-    static int pomodoro;
-    static int resetnum=0;
+
 
     JLabel timeLabel = new JLabel();
     int elapsedTime = 0;
@@ -24,34 +23,10 @@ public class PomodoroUI implements ActionListener{
     String seconds_string = String.format("%02d",seconds);
     String minutes_string = String.format("%02d",minutes);
     String hours_string = String.format("%02d",hours);
-    Timer timer = new Timer(1000, new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-                elapsedTime+= 1000;
-                hours = (elapsedTime/3600000);
-                minutes = (elapsedTime/60000)%60;
-                seconds = (elapsedTime/1000)%60;
-                if (seconds ==3) {
-                    reset();
-                    countReset();
-                    try {
-                        Thread.sleep(2000);
-                    }
-                    catch (InterruptedException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                    start();
-                }
-               if (resetnum == pomodoro){
-                   reset();
-                   startButton.setText("START");
-                }
-                seconds_string = String.format("%02d",seconds);
-                minutes_string = String.format("%02d",minutes);
-                hours_string = String.format("%02d",hours);
-                timeLabel.setText(hours_string+ ":" + minutes_string + ":" + seconds_string);
 
-        }
-    });
+
+
+
 
 
     public PomodoroUI(){
@@ -121,36 +96,7 @@ public class PomodoroUI implements ActionListener{
 
     }
 
-    public void start() {
-        timer.start();
-            }
-
-    public void  stop(){
-        timer.stop();
-    }
-
-    public void reset(){
-        timer.stop();
-        elapsedTime =0;
-        seconds =0;
-        hours =0;
-        seconds_string = String.format("%02d",seconds);
-        minutes_string = String.format("%02d",minutes);
-        hours_string = String.format("%02d",hours);
-        timeLabel.setText(hours_string+ ":" + minutes_string + ":" + seconds_string);
-    }
-
-    public static int getSeconds(){
-        return (seconds);
-    }
-
-    public static void countReset(){
-        resetnum += 1;
-    }
-
-    public static int getPomodoros(){
-        return pomodoro;
-    }
+    
 
 
 }

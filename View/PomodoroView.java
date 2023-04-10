@@ -2,7 +2,7 @@ package View;
 
 import javax.swing.*;
 
-import Controller.PomodoroController;
+import Controller.PomodorUIController;
 import Model.PomodoroModel;
 
 import java.awt.*;
@@ -98,15 +98,15 @@ public class PomodoroView implements ActionListener {
     }
 
     public void start() {
-        PomodoroController.timer.start();
+        PomodorUIController.timer.start();
     }
 
     void stop() {
-        PomodoroController.timer.stop();
+        PomodorUIController.timer.stop();
     }
 
     void reset() {
-        PomodoroController.timer.stop();
+        PomodorUIController.timer.stop();
         reset = true;
         model.elapsedTime = 0;
         model.seconds = 0;
