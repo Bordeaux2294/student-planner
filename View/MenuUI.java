@@ -229,7 +229,7 @@ public class MenuUI extends JFrame{
                 Frame.setContentPane(EventForm);
 
             } if (e.getSource()==pomodoroClockMenuItem){
-                new PomodoroUI();
+                new PomodoroView();
             }
             if (e.getSource()==LogoutMenuItem){
                 Frame.dispose();

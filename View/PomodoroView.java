@@ -1,4 +1,9 @@
+package View;
 import javax.swing.*;
+
+import Controller.PomodoroController;
+import Model.PomodoroModel;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,31 +11,31 @@ import java.awt.event.ActionListener;
 import static java.lang.Integer.parseInt;
 
 public class PomodoroView implements ActionListener {
-    public int pomodoros;
-    int study;
-    int breaks;
-    boolean began = false;
-    String cycles;
-    Integer Cycles;
-    boolean reset = false;
-    JFrame frame = new JFrame();
-    JButton startButton = new JButton("START");
-    JButton resetButton = new JButton("RESET");
-    static int resetnum=0;
-    JLabel timeLabel = new JLabel();
-    JLabel pomodorolbl = new JLabel("Pomodoros:");
-    JLabel breaklbl = new JLabel("Length of break:");
-    JLabel studylbl = new JLabel("Length of study per cycle:");
-    JTextField pomodoroNum = new JTextField();
-    JTextField breakNum = new JTextField();
-    JTextField studyNum = new JTextField();
+    private int pomodoros;
+    private int study;
+    private int breaks;
+    private boolean began = false;
+    private String cycles;
+    private Integer Cycles;
+    private boolean reset = false;
+    private JFrame frame = new JFrame();
+    private JButton startButton = new JButton("START");
+    private JButton resetButton = new JButton("RESET");
+    private static int resetnum=0;
+    private JLabel timeLabel = new JLabel();
+    private JLabel pomodorolbl = new JLabel("Pomodoros:");
+    private JLabel breaklbl = new JLabel("Length of break:");
+    private JLabel studylbl = new JLabel("Length of study per cycle:");
+    private JTextField pomodoroNum = new JTextField();
+    private JTextField breakNum = new JTextField();
+    private JTextField studyNum = new JTextField();
 
-    PomodoroModel model = new PomodoroModel();
-    String sec = model.seconds_string;
-    String min = model.minutes_string;
-    String hrs = model.hours_string;
+    private PomodoroController model;
+    private String sec = "00";
+    private String min = "00";
+    private String hrs = "00";
 
-    PomodoroView(){
+    public PomodoroView(){
         timeLabel.setText(hrs + ":" + min + ":" + sec);
         timeLabel.setBounds(100,200,200,100);
         timeLabel.setFont(new Font("Verdana",Font.PLAIN,35));
@@ -67,11 +72,28 @@ public class PomodoroView implements ActionListener {
         frame.add(startButton);
         frame.add(resetButton);
         frame.add(timeLabel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(420,420);
         frame.setLayout(null);
         frame.setVisible(true);
 
+    }
+
+    public void setTimelabel(String s){
+        timeLabel.setText(s);
+    }
+
+    public void setBegan(boolean b){
+        began = b;
+    }
+    public int getPomodoros(){
+       return pomodoros;
+    }
+    public int getStudy(){
+        return study;
+    }
+    public int getBreaks(){
+        return breaks;
     }
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -82,52 +104,29 @@ public class PomodoroView implements ActionListener {
                 study = parseInt( (String) studyNum.getText());
 
                 began = true;
-                start();
+                model = new PomodoroController(this);
+                sec = model.get_SecStr();
+                min = model.get_MinStr();
+                hrs = model.get_HourStr();
+                startButton.setText("Stop");
+                model.Start();
+                
             }
             else {
                 began=false;
-                stop();
+                model.Stop();
+                startButton.setText("Start");
             }
         }
         if(e.getSource()==resetButton){
-            model.started=false;
-            reset();
+            model.setStarted(false);
+            model.Reset();
+            startButton.setText("Start");
         }
     }
 
-<<<<<<< HEAD
-    public void start() {
-        PomodorUIController.timer.start();
-    }
-
-    void stop() {
-        PomodorUIController.timer.stop();
-    }
-
-    void reset() {
-        PomodorUIController.timer.stop();
-=======
-
-    void start(){
-        PomodoroController.timer.start();
-        began = true;
-    }
-    void stop(){
-        PomodoroController.timer.stop();
-    }
-    void reset(){
-        PomodoroController.timer.stop();
->>>>>>> 7e806478217dc59838489815191666076ea00fd7
-        reset = true;
-        model.elapsedTime=0;
-        model.seconds =0;
-        model.minutes=0;
-        model.hours=0;
-        model.seconds_string = String.format("%02d",model.seconds);
-        model.minutes_string = String.format("%02d", model.minutes);
-        model.hours_string = String.format("%02d", model.hours);
-        timeLabel.setText(model.hours_string+":"+model.minutes_string+":"+model.seconds_string);
-    }
+  
+    
 
     public static void countReset(){
         resetnum += 1;
