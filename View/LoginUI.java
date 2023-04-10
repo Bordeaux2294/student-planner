@@ -27,7 +27,13 @@ public class LoginUI extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         JPanel optionspane = new JPanel();
-
+        optionspane.setBackground(new Color(255, 233, 225)); // Light pink background
+        Font wFont = new Font("Garamond", Font.BOLD | Font.ROMAN_BASELINE, 25);
+        JLabel welcome1 = new JLabel("       Student Planner App" );
+        
+        welcome1.setFont(wFont);
+        optionspane.add(welcome1);
+        optionspane.add(new JLabel("                       "));
         
         loginButton = new JButton("Login");
         loginButton.addActionListener(this);
@@ -45,6 +51,8 @@ public class LoginUI extends JFrame implements ActionListener {
      //login option for a user that already has an account 
     public void loginOpt(){
         JPanel panel = new JPanel(new GridLayout(4, 2));
+        panel.setBackground(new Color(255, 233, 225)); // Light pink background
+        
 
         JLabel usernameLabel = new JLabel("Username:");
         panel.add(usernameLabel);
@@ -81,7 +89,8 @@ public class LoginUI extends JFrame implements ActionListener {
     // sign up option for a user that does not have an account
     public void signupOpt(){
         JPanel panel = new JPanel(new GridLayout(5, 4));
-
+        panel.setBackground(new Color(255, 233, 225)); // Light pink background
+        
         JLabel usernameLabel = new JLabel("Username:");
         panel.add(usernameLabel);
 

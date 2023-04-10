@@ -42,7 +42,7 @@ public class PomodoroView implements ActionListener {
         timeLabel.setBorder(BorderFactory.createBevelBorder(1));
         timeLabel.setOpaque(true);
         timeLabel.setHorizontalAlignment(JTextField.CENTER);
-
+        
         startButton.setBounds(100,300,100,50);
         startButton.setFont(new Font("Ink Free",Font.PLAIN,20));
         startButton.setFocusable(false);
