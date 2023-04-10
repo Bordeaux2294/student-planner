@@ -143,7 +143,7 @@ public class LoginUI extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(null, "Login successful.");
                 // successful login, open another window or change current window
                 dispose();
-                new MenuUI( currAccount.getCurrentUser().getCurrentUsername());
+                new MenuUI();
             } else {
                 errorLabel.setText("Incorrect username or password.");
             }
@@ -168,7 +168,7 @@ public class LoginUI extends JFrame implements ActionListener {
                     JOptionPane.showMessageDialog(null, "Your Account Was Successfully Created.");
                     
                     dispose();
-                    new MenuUI(currAccount.getCurrentUser().getCurrentUsername());
+                    new MenuUI();
                 }
             }
             else{

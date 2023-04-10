@@ -23,13 +23,13 @@ public class TimetableUI extends JFrame {
     private JTable timetableTable;
     private JButton closeButton;
     private JButton addEntry;
-    private String  currentUsername;
+  
     private MenuUI F;
     private List<String> entryList;
 
-    public TimetableUI(String currentUsername) {
-        this.currentUsername=currentUsername;
-        ScheduleController sc = new ScheduleController(currentUsername);
+    public TimetableUI() {
+        
+        ScheduleController sc = new ScheduleController();
         
 
     }
@@ -110,7 +110,7 @@ public class TimetableUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource()==addEntry) {
-                       new ScheduleEntryUI(currentUsername);
+                       new ScheduleEntryUI();
                 } 
             }
         });
@@ -120,7 +120,7 @@ public class TimetableUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource()==closeButton) {
                        F.dispose();
-                       new MenuUI(currentUsername);
+                       new MenuUI();
                 } 
             }
         });
@@ -129,7 +129,7 @@ public class TimetableUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource()==info) {
-                       new CourseInfoUI(currentUsername);
+                       new CourseInfoUI();
                 } 
             }
         });

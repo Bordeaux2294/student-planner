@@ -4,7 +4,7 @@ import java.sql.*;
 
 
 public class User {
-    private String currentUsername = "";
+    private  String currentUsername = "";
 
     private static String url = "jdbc:mysql://localhost:3306/studentplannerdb";
     private static String user = "root";
@@ -13,8 +13,8 @@ public class User {
     public User(String username, String password) {
 
         if (checkUser(username) == false) {
-            currentUsername = username;
-            // Create a connection to the MySQL database
+            
+            
             try (Connection connection = DriverManager.getConnection(url, user, pword)) {
                 // Insert the user into the database
                 String sql = "INSERT INTO users (username, password) VALUES (?,?)";
@@ -22,6 +22,7 @@ public class User {
                 statement.setString(1, username);
                 statement.setString(2, password);
                 statement.executeUpdate();
+                currentUsername = username;
 
             } catch (SQLException ex) {
                 System.out.println(ex);
@@ -69,7 +70,7 @@ public class User {
         return success;
     }
 
-    public String getCurrentUsername() {
+    public  String getCurrentUsername() {
         return currentUsername;
     }
 

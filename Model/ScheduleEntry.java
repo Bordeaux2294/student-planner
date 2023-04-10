@@ -11,6 +11,7 @@ import java.sql.Time;
 import java.sql.ResultSetMetaData;
 import java.util.*;
 
+import Controller.AccountController;
 import Controller.ScheduleController;
 
 
@@ -25,12 +26,12 @@ public class ScheduleEntry {
     private String type = "";
    
 
-    private static String currentUsername;
+   
 
 
 
-    public ScheduleEntry(String currentUsername, String courseTitle, String day, Time classStartTime, Time classEndTime, String lecturer, String courseRoom, String type){
-        ScheduleEntry.currentUsername = currentUsername;
+    public ScheduleEntry( String courseTitle, String day, Time classStartTime, Time classEndTime, String lecturer, String courseRoom, String type){
+     
         this.courseTitle = courseTitle;
         this.day = day;
         this.classStartTime = classStartTime;
@@ -42,7 +43,7 @@ public class ScheduleEntry {
     }
     
     public static List<String> getScheduleEntry(){
-        currentUsername = ScheduleController.getCurrentUser();
+        String currentUsername = AccountController.getCurrentUser().getCurrentUsername();
         List<String> entries = new ArrayList<>();
         // String username = " where username= '"+currentUsername+"'";
         try {
@@ -71,7 +72,7 @@ public class ScheduleEntry {
     //     getScheduleEntry();
     // }
     public static ArrayList<String[]> listCourseInfo(){
-        currentUsername = ScheduleController.getCurrentUser();
+        String currentUsername = AccountController.getCurrentUser().getCurrentUsername();
         ArrayList<String[]> courseInfoList = new ArrayList<>();
         String username = " where schedule.username= '"+currentUsername+"' group by start_time order by CASE WHEN day_of_week =  'Sunday' THEN 1 WHEN day_of_week= 'Monday' THEN 2 WHEN day_of_week= 'Tuesday' THEN 3 WHEN day_of_week= 'Wednesday' THEN 4 WHEN day_of_week= 'Thursday' THEN 5 WHEN day_of_week= 'Friday' THEN 6 WHEN day_of_week= 'Saturday' THEN 7 END ASC";
         try (Connection connection = DriverManager.getConnection(User.getUrl(), User.getUser(), User.getPword());
@@ -97,7 +98,7 @@ public class ScheduleEntry {
             // Insert the reminder into the database
             String sql = "INSERT INTO schedule (username, day_of_week, start_time, end_time, course_code, instructor, room, ctype) VALUES (?,?,?,?,?,?,?,?)";
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, currentUsername);
+            statement.setString(1, AccountController.getCurrentUser().getCurrentUsername());
             statement.setString(2, day);
             statement.setTime(3, classStartTime);
             statement.setTime(4, classEndTime);

@@ -10,25 +10,23 @@ import java.sql.Statement;
 import java.sql.ResultSetMetaData;
 import java.util.*;
 
+import Controller.AccountController;
 import Controller.CourseController;
 
 public class Course {
     private String coursecode;
     private String coursetitle;
-    private ArrayList<String[]> courseInfoList;
-    private ArrayList<String[]> courseList;
 
-    private static String currentUsername;
+
+   
 
     public Course(){
 
     }
-    public void setUsername(String usrname){
-        Course.currentUsername = usrname;
-    }
+  
 
-    public Course(String currentUsername,String coursecode, String coursetitle){
-        Course.currentUsername = currentUsername;
+    public Course (String coursecode, String coursetitle){
+       
         this.coursecode = coursecode;
         this.coursetitle = coursetitle;
         storeCourse();
@@ -36,7 +34,7 @@ public class Course {
 
 
     public static ArrayList<String[]> getCourses() {
-        currentUsername = CourseController.getCurrentUser();
+        String currentUsername = AccountController.getCurrentUser().getCurrentUsername();
         ArrayList<String[]> courseList = new ArrayList<>();
         String username = " where username = '"+currentUsername+"'";
         try (Connection connection = DriverManager.getConnection(User.getUrl(), User.getUser(), User.getPword());
@@ -58,7 +56,7 @@ public class Course {
     }
 
     public static List<String> listCourses() {
-        currentUsername = CourseController.getCurrentUser();
+        String currentUsername = AccountController.getCurrentUser().getCurrentUsername();
         List<String> courseList = new ArrayList<>();
         try {
             Connection conn = DriverManager.getConnection(User.getUrl(), User.getUser(), User.getPword());
@@ -97,7 +95,7 @@ public class Course {
             // Insert the reminder into the database
             String sql = "INSERT INTO courses (username, course_code, course_name) VALUES (?,?,?)";
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, currentUsername);
+            statement.setString(1, AccountController.getCurrentUser().getCurrentUsername());
             statement.setString(2, coursecode);
             statement.setString(3,coursetitle);
             statement.executeUpdate();

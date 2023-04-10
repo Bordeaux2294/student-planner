@@ -18,6 +18,7 @@ import javax.swing.JTextPane;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import Controller.AccountController;
 import Controller.EventReminderController;
 import Controller.GradeCalculatorController;
 import Model.Course;
@@ -38,7 +39,7 @@ import java.awt.event.*;
 
 
 public class MenuUI extends JFrame{
-    private static String currentUsername;
+   
     
     private JMenuBar menubar;
     private JPanel eventpane;
@@ -61,8 +62,8 @@ public class MenuUI extends JFrame{
 
     static MenuUI Frame;
 
-    public MenuUI(String currentUsername) {
-        MenuUI.currentUsername = currentUsername;
+    public MenuUI() {
+     
         Frame=this;
         
         // Set up JFrame properties
@@ -134,7 +135,7 @@ public class MenuUI extends JFrame{
         leftpanel =new JPanel();
         leftpanel.setBackground(new Color(255, 233, 225)); // Light pink background
         Font wFont = new Font("Garamond", Font.BOLD | Font.ROMAN_BASELINE, 15);
-        JLabel welcome1 = new JLabel("Hello "+ currentUsername +"! Welcome to our Student Planner App" );
+        JLabel welcome1 = new JLabel("Hello "+ AccountController.getCurrentUser().getCurrentUsername() +"! Welcome to our Student Planner App" );
         welcome1.setAlignmentX(Component.CENTER_ALIGNMENT);
         welcome1.setFont(wFont);
         JLabel welcome2 = new JLabel("Remember 'Failing to plan is planning to fail.' - Alan Lakein." );
@@ -200,23 +201,12 @@ public class MenuUI extends JFrame{
         setVisible(true);
     }
     
-    // private void setWidths(JTable t, int[] widths) {
-    //     TableColumnModel columnModel = t.getColumnModel();
-    //     for (int i = 0; i < widths.length; i++) {
-    //         TableColumn column = columnModel.getColumn(i);
-    //         column.setPreferredWidth(widths[i]);
-    //         column.setMaxWidth(widths[i]);
-    //         column.setMinWidth(widths[i]);
-    //     }
-    // }
+  
     public static JTable loadEventTable(){
         return EventReminderController.getevents();
         
     }
-    public static String getCurrentUser(){
-        return currentUsername;
-    }
-
+ 
     class MenuItemListener implements ActionListener{
         public void actionPerformed(ActionEvent e){ 
             if(e.getSource()==HomeMenuItem){
@@ -232,7 +222,7 @@ public class MenuUI extends JFrame{
             if(e.getSource()==createEventMenuItem){
 
              
-                JPanel EventForm = new CalendarUI(currentUsername).DisplayEventForm(Frame);
+                JPanel EventForm = new CalendarUI().DisplayEventForm(Frame);
                 EventForm.setVisible(true);
                 Frame.getContentPane().removeAll();
                 Frame.getContentPane().revalidate();
@@ -246,17 +236,17 @@ public class MenuUI extends JFrame{
                 new LoginUI();
             }
             if (e.getSource()==viewCoursesMenuItem){
-                new CourseInfoUI(currentUsername);
+                new CourseInfoUI();
             }
             if (e.getSource()==containerMenuItem){
                 new ContainerUI();
             }
 
             if(e.getSource()==AddCourseMenuItem){
-                new CourseUI(currentUsername);
+                new CourseUI();
             }
             if(e.getSource()==courseTimetableMenuItem){
-                JPanel tt = new TimetableUI(currentUsername).DisplayTimeTable(Frame);
+                JPanel tt = new TimetableUI().DisplayTimeTable(Frame);
                 tt.setVisible(true);
                 Frame.getContentPane().removeAll();
                 Frame.getContentPane().revalidate();

@@ -26,17 +26,16 @@ import View.MenuUI;
 
 public class EventReminderController{
      
-    private static String currentUsername;
     private static ArrayList<Reminder> rlst;
     private static ArrayList<Event> elst;
-    public EventReminderController(String currentUsername){
-    EventReminderController.currentUsername =  currentUsername;
+    public EventReminderController(){
+    
     
     }
 
     public boolean addEvent(String eventName, Date startDateTime, Date endDateTime){
        
-        new Event(currentUsername, eventName, startDateTime, endDateTime).storeEvent();;
+        new Event(eventName, startDateTime, endDateTime).storeEvent();;
        
         return true;
                 
@@ -123,13 +122,10 @@ public class EventReminderController{
     }
 
     public static JTable getevents(){
-        currentUsername = MenuUI.getCurrentUser();
+        
         return Event.listEvents();
     }
  
-    public static String getCurrentUser(){
-        return currentUsername;
-    }
 
     public static int getlastEid(){
         return Event.getlastEid();

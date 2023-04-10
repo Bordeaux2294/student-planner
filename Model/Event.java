@@ -11,6 +11,8 @@ import java.util.*;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import Controller.AccountController;
 import Controller.EventReminderController;
 
 public class Event{
@@ -24,7 +26,7 @@ public class Event{
     private String eventName;
     
     
-    private static String currentUsername;
+    
  
 
 
@@ -38,8 +40,8 @@ public Event(int eid, String eventName, Date startDateTime, Date endDateTime, St
 }
 
 
-public Event(String currentUsername, String eventName, Date startDateTime, Date endDateTime){
-    Event.currentUsername=currentUsername;
+public Event(String eventName, Date startDateTime, Date endDateTime){
+    
     this.startDateTime = startDateTime;
     this.endDateTime = endDateTime;
     this.eventName = eventName;
@@ -48,7 +50,7 @@ public Event(String currentUsername, String eventName, Date startDateTime, Date 
 
  public static JTable listEvents() {
     Object[] outer;
-    currentUsername = EventReminderController.getCurrentUser();
+   
     
     DefaultTableModel model = new DefaultTableModel(new Object[]{"Ref No."," Event Name", "Start Datetime", "End Datetime", "Status", "Reminder"},0);
     JTable t = new JTable(model);
@@ -58,7 +60,7 @@ public Event(String currentUsername, String eventName, Date startDateTime, Date 
         // Select the events from the database
         String sql = "SELECT eid, ename, sdatetime, edatetime, status, reminder FROM events WHERE username = ?";
         PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setString(1, currentUsername);
+        statement.setString(1, AccountController.getCurrentUser().getCurrentUsername());
         ResultSet row = statement.executeQuery();
 
         // Add the rows to the JTable
@@ -110,7 +112,7 @@ public void storeEvent(){
             // Insert the reminder into the database
             String sql = "INSERT INTO events (username, ename, sdatetime, edatetime) VALUES (?,?,?,?)";
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, currentUsername);
+            statement.setString(1, AccountController.getCurrentUser().getCurrentUsername());
             statement.setString(2, eventName);
             statement.setTimestamp(3, new Timestamp(startDateTime.getTime()));
             statement.setTimestamp(4, new Timestamp(endDateTime.getTime()));
@@ -154,8 +156,6 @@ public String getEventName() {
 }
 
 
-public static String getCurrentUsername() {
-    return currentUsername;
-}
+
 
 } 

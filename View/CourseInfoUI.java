@@ -11,10 +11,10 @@ import java.util.*;
 public class CourseInfoUI extends JFrame {
     private JList<String[]> courseList;
     private JButton closeButton;
-    private String currentUsername;
 
-    public CourseInfoUI(String currentUsername) {
-        this.currentUsername = currentUsername;
+
+    public CourseInfoUI() {
+       
         setVisible(true);
         setTitle("Course List");
         setSize(600, 300);
@@ -39,7 +39,7 @@ public class CourseInfoUI extends JFrame {
         // Load courses from the database
         
             
-            ScheduleController sc = new ScheduleController(currentUsername);
+            ScheduleController sc = new ScheduleController();
             ArrayList<String[]> clist = listCourseInfo();
             courseList.setListData(clist.toArray(new String[clist.size()][]));
             courseList.setCellRenderer(new ListCellRenderer<String[]>() {

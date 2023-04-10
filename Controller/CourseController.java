@@ -8,14 +8,16 @@ import Model.Course;
 
 
 public class CourseController {
-    private static String currentUsername="lo";
+    
+    private ArrayList<String[]> courseInfoList;
+    private ArrayList<String[]> courseList;
 
-    public CourseController(String currentUsername){
-        CourseController.currentUsername = currentUsername;
+    public CourseController(){
+       
     }
 
     public boolean addCourse(String coursecode, String coursetitle){
-        new Course(currentUsername, coursetitle, coursecode);
+        new Course(coursetitle, coursecode);
         return true;
     }
 
@@ -23,9 +25,6 @@ public class CourseController {
         return Course.listCourses();
     }
 
-    public static String getCurrentUser(){
-        return currentUsername;
-    }
 
 
     public  static ArrayList<String[]> getCourses(){

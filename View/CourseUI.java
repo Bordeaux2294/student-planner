@@ -2,6 +2,7 @@ package View;
 
 import javax.swing.*;
 
+import Controller.AccountController;
 import Controller.CourseController;
 
 import java.awt.*;
@@ -19,10 +20,10 @@ public class CourseUI extends JFrame{
     private List<String> courses;
 
 
-    private String currentUsername;
+   
 
-    public CourseUI(String currentUsername){
-        this.currentUsername = currentUsername;
+    public CourseUI(){
+        
         setTitle("Add New Course");
         setSize(100,50);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -85,8 +86,8 @@ public class CourseUI extends JFrame{
         
     }
 
-    public static List<String> listCourses(String currentUsername){
-        CourseController scc = new CourseController(currentUsername);
+    public static List<String> listCourses(){
+        CourseController scc = new CourseController();
         return CourseController.listCourses();
     }
 
@@ -94,7 +95,7 @@ public class CourseUI extends JFrame{
         // Get the values entered in the text fields
        public void actionPerformed(ActionEvent e){
             List<String> courses = new ArrayList<>();
-            courses = listCourses(currentUsername);
+            courses = listCourses();
             String courseCode = codeField.getText();
             String courseTitle = titleField.getText();
             if (courseCode.equals("") || courseTitle.equals("")){
@@ -104,7 +105,7 @@ public class CourseUI extends JFrame{
             if(courses.contains(courseCode)){
                 JOptionPane.showMessageDialog(null, "This course already exists", "Error", JOptionPane.ERROR_MESSAGE);
             }else{
-                CourseController cc = new CourseController(currentUsername);
+                CourseController cc = new CourseController();
                 cc.addCourse(courseTitle, courseCode);
             // Do something with the course information (e.g. add to a timetable)
                 System.out.println("Course Code: " + courseCode);

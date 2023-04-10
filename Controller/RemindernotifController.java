@@ -26,7 +26,7 @@ import javax.sound.sampled.*;
 import Model.Event;
 import Model.Reminder;
 import View.LoginUI;
-import View.RemindernotifUI;
+
 
 import java.util.Scanner;
 

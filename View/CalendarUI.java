@@ -36,11 +36,11 @@ public class CalendarUI {
 
     private JPanel panel;
     private JPanel Rpanel;
-    private String  currentUsername;
+
     private MenuUI F;
 
-    public CalendarUI(String currentUsername){
-        this.currentUsername=currentUsername;
+    public CalendarUI(){
+     
     }
     public JPanel DisplayEventForm(MenuUI F){
         this.F =F;
@@ -145,7 +145,7 @@ public class CalendarUI {
         //     public void actionPerformed(ActionEvent e) {
         //         if (e.getSource()==closeButton) {
         //                F.dispose();
-        //                new MenuUI(currentUsername);
+        //                new MenuUI();
         //         } 
         //     }
         // });
@@ -306,7 +306,7 @@ public class CalendarUI {
             return;
             }
         else {
-             EventReminderController er =new EventReminderController(currentUsername);
+             EventReminderController er =new EventReminderController();
             if (er.addEvent(eventName, startDateTime, endDateTime)){
                     if (setReminderBox.isSelected()){
                             if (dateTime.before(currentDate)){
@@ -321,7 +321,7 @@ public class CalendarUI {
                                     else {
                                         JOptionPane.showMessageDialog(null, "Event saved successfully");
                                         F.dispose();
-                                        new MenuUI(currentUsername);
+                                        new MenuUI();
                                         return;
                                     }       
                                 }
@@ -329,7 +329,7 @@ public class CalendarUI {
                     } else { 
                         JOptionPane.showMessageDialog(null, "Event saved successfully");
                         F.dispose();
-                        new MenuUI(currentUsername);
+                        new MenuUI();
                         return;
                     }   
            }

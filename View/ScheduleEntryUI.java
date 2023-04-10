@@ -1,6 +1,7 @@
 package View;
 
 import Controller.ScheduleController;
+import Controller.AccountController;
 import Controller.CourseController;
 
 import javax.swing.*;
@@ -34,11 +35,10 @@ public class ScheduleEntryUI extends JFrame {
     private JButton cancelButton;
 
 
-    private String currentUsername;
 
-    public ScheduleEntryUI(String currentUsername) {
-        this.currentUsername = currentUsername;
-        List<String> values = listCourses(currentUsername);
+    public ScheduleEntryUI() {
+       
+        List<String> values = listCourses();
         // Create a DefaultComboBoxModel and pass in the list of values
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(values.toArray(new String[0]));
 
@@ -222,7 +222,7 @@ public class ScheduleEntryUI extends JFrame {
                 JOptionPane.showMessageDialog(null, "Start time must be different from end time.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }else{
-                ScheduleController scc = new ScheduleController(currentUsername);
+                ScheduleController scc = new ScheduleController();
                 scc.addEntry(courseCode, dayOfWeek, st, et, lecturer, room, type);
                 JOptionPane.showMessageDialog(null, "Data submitted successfully");
 
@@ -234,8 +234,8 @@ public class ScheduleEntryUI extends JFrame {
     
     }
     
-    public static List<String> listCourses(String currentUsername){
-        CourseController scc = new CourseController(currentUsername);
+    public static List<String> listCourses(){
+        CourseController scc = new CourseController();
         return CourseController.listCourses();
     }
    

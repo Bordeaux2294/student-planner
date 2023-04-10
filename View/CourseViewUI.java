@@ -17,10 +17,10 @@ public class CourseViewUI extends JFrame {
     private JList<String[]> courseList;
     
     private JButton closeButton;
-    private String currentUsername;
+   
 
-    public CourseViewUI(String currentUsername) {
-        this.currentUsername = currentUsername;
+    public CourseViewUI() {
+        
         setVisible(true);
         setTitle("Course List");
         setSize(400, 300);
@@ -43,7 +43,7 @@ public class CourseViewUI extends JFrame {
         add(mainPanel);
 
        //Load courses from database
-            CourseController cc = new CourseController(currentUsername);
+            CourseController cc = new CourseController();
             ArrayList<String[]> clist= getCourses();
             courseList.setListData(clist.toArray(new String[clist.size()][]));
           
