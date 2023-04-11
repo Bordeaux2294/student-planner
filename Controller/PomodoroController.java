@@ -2,17 +2,12 @@ package Controller;
 
 import javax.swing.*;
 
-import Model.Pomodoro;
+
 import Model.PomodoroModel;
-import Model.User;
+
 import View.PomodoroView;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-
-
-import java.util.TimerTask;
 
 public class PomodoroController {
     static Timer timer;

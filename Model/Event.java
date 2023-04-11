@@ -7,10 +7,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 
 import Controller.AccountController;
 import Controller.EventReminderController;
@@ -24,13 +26,14 @@ public class Event{
     private Date endDateTime;
 
     private String eventName;
-    
+    private String username;
     
     
  
 
 
-public Event(int eid, String eventName, Date startDateTime, Date endDateTime, String status, String reminder){
+public Event(String username, int eid, String eventName, Date startDateTime, Date endDateTime, String status, String reminder){
+    this.username=username;
     this.eventID = eid;
     this.startDateTime = startDateTime;
     this.endDateTime = endDateTime;
@@ -54,8 +57,12 @@ public Event(String eventName, Date startDateTime, Date endDateTime){
     
     DefaultTableModel model = new DefaultTableModel(new Object[]{"Ref No."," Event Name", "Start Datetime", "End Datetime", "Status", "Reminder"},0);
     JTable t = new JTable(model);
-    t.setEnabled(false);
-    
+    t.setEnabled(true);
+    TableColumnModel columnModel = t.getColumnModel();
+    columnModel.getColumn(0).setPreferredWidth(50);
+    columnModel.getColumn(1).setPreferredWidth(100);
+    columnModel.getColumn(2).setPreferredWidth(150);
+    columnModel.getColumn(3).setPreferredWidth(150);
     try (Connection connection = DriverManager.getConnection(User.getUrl(), User.getUser(), User.getPword())) {
         // Select the events from the database
         String sql = "SELECT eid, ename, sdatetime, edatetime, status, reminder FROM events WHERE username = ?";
@@ -101,8 +108,74 @@ public Event(String eventName, Date startDateTime, Date endDateTime){
 
     return id;
 }
+public void updateEvent(int eid, int col, String newVal){
+    try (Connection connection = DriverManager.getConnection(User.getUrl(), User.getUser(), User.getPword())) {
 
-//public static int changeEventStatus(){}
+        String columnName="";
+        switch (col) {
+
+            case 1:
+                columnName = "ename";
+                break;
+            case 2:
+                columnName = "sdatetime";
+                break;
+            case 3:
+                columnName = "edatetime";
+                break;
+            case 4:
+                columnName = "status";
+                break;
+            case 5:
+                columnName = "reminder";
+                break;
+            
+        }
+
+        String sql = "Update events Set ? = ? where  eid = ?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        Date currentDate = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
+        String currentDateTimeString = formatter.format(currentDate);
+        statement.setString(1, columnName);
+        statement.setString(2, newVal);
+        statement.setInt(3, eid);
+        statement.executeUpdate();
+
+    }
+    catch (SQLException ex) {
+    System.out.println(ex);
+    }  
+
+}
+
+public static boolean changeEventStatus(){
+    boolean rowchanged = false;
+    try (Connection connection = DriverManager.getConnection(User.getUrl(), User.getUser(), User.getPword())) {
+        String sql = "Update events Set status = 'Ongoing' where sdatetime <= str_to_date(?, '%Y-%m-%d %h:%i %p') And edatetime >= str_to_date(?, '%Y-%m-%d %h:%i %p')";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        Date currentDate = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
+        String currentDateTimeString = formatter.format(currentDate);
+        statement.setString(1, currentDateTimeString);
+        statement.setString(2, currentDateTimeString);
+        int rowsAffected1 = statement.executeUpdate();
+
+        String sql2 = "Update events Set status = 'Past' where edatetime < str_to_date(?, '%Y-%m-%d %h:%i %p')";
+        PreparedStatement statement2 = connection.prepareStatement(sql2);
+        statement2.setString(1, currentDateTimeString);
+        int rowsAffected2= statement2.executeUpdate();
+
+        if (rowsAffected1>0 || rowsAffected2>0){
+            rowchanged= true;
+        }
+        else rowchanged= false;
+    }
+    catch (SQLException ex) {
+    System.out.println(ex);
+    } 
+    return rowchanged; 
+}
 
 
 
@@ -153,6 +226,11 @@ public Date getEndDateTime() {
 
 public String getEventName() {
     return eventName;
+}
+
+
+public String getUsername() {
+    return username;
 }
 
 

@@ -90,7 +90,7 @@ public class LoginUI extends JFrame implements ActionListener {
     public void signupOpt(){
         JPanel panel = new JPanel(new GridLayout(5, 4));
         panel.setBackground(new Color(255, 233, 225)); // Light pink background
-        
+
         JLabel usernameLabel = new JLabel("Username:");
         panel.add(usernameLabel);
 
@@ -201,9 +201,12 @@ public class LoginUI extends JFrame implements ActionListener {
         new LoginUI();
         schedulerThread = new Thread(new Runnable() {
             public void run() {
+                
                 while (!Thread.currentThread().isInterrupted()) {
                     try {
                         EventReminderController.getscheduledReminders();
+                        EventReminderController.getscheduledEvents();
+                        EventReminderController.refreshTable();
                         Thread.sleep(1000); // wait for 1 second before running again
                     } catch (InterruptedException e) {
                         // Thread was interrupted, exit the loop
@@ -212,6 +215,7 @@ public class LoginUI extends JFrame implements ActionListener {
                         System.err.println("Error creating system tray icon: " + e.getMessage());
                     }
                 }
+              
             }
         });
 
@@ -220,5 +224,6 @@ public class LoginUI extends JFrame implements ActionListener {
 
         // Your main program logic continues here
     }
+   
 }
 

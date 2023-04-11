@@ -15,8 +15,12 @@ import javax.swing.JScrollPane;
 
 import javax.swing.JTable;
 import javax.swing.JTextPane;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 
 import Controller.AccountController;
 import Controller.EventReminderController;
@@ -29,14 +33,15 @@ import java.awt.Font;
 
 import java.awt.GridLayout;
 
-
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.*;
-
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MenuUI extends JFrame{
    
@@ -175,11 +180,10 @@ public class MenuUI extends JFrame{
         table.setFillsViewportHeight(true);
         table.setIntercellSpacing(new Dimension(0, 0));
         table.setShowGrid(false);
-
-        TableColumnModel columnModel = table.getColumnModel();
-        columnModel.getColumn(1).setPreferredWidth(100);
-        columnModel.getColumn(2).setPreferredWidth(150);
-        columnModel.getColumn(3).setPreferredWidth(150);
+        TableModel model = table.getModel();
+        MyTableModelListener listener = new MyTableModelListener();
+        model.addTableModelListener(listener);
+      
         // Add table to scroll pane
         scrollPane = new JScrollPane(table);
         eventpane.add(scrollPane, BorderLayout.CENTER);
@@ -206,6 +210,20 @@ public class MenuUI extends JFrame{
         return EventReminderController.getevents();
         
     }
+
+    public static JTable getEventTable(){
+        return table;
+    }
+
+    public static void changeEventTable(JTable t) {
+    
+        DefaultTableModel m = (DefaultTableModel) t.getModel();
+        table.setModel(m);
+        m.fireTableDataChanged();
+       
+        
+    }
+
  
     class MenuItemListener implements ActionListener{
         public void actionPerformed(ActionEvent e){ 
@@ -265,4 +283,17 @@ public class MenuUI extends JFrame{
         
         }  
     }
-}
+
+    
+    class MyTableModelListener implements TableModelListener {
+        public void tableChanged(TableModelEvent e) {
+            int row = e.getFirstRow();
+            int column = e.getColumn();
+            TableModel model = (TableModel) e.getSource();
+            Object data = model.getValueAt(row, column);
+            System.out.println("Cell at row " + row + " and column " + column + " is changed to " + data);
+        }
+    }
+    
+}    
+
