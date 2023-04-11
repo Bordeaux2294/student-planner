@@ -10,10 +10,7 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 
 public class Notes {
-    private static String url = "jdbc:mysql://localhost:3306/studentplannerdb";
-    private static String user = "root";
-    private static String password = ""; // replace empty string with your database password
-
+ 
     private String text = "";
     public int courseID = 0;
     private int noteID = -999;
@@ -147,7 +144,7 @@ public class Notes {
      * note.
      */
     public void saveNote() {
-        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+        try (Connection connection = DriverManager.getConnection(User.getUrl(), User.getUser(), User.getPword())) {
             // Insert note into the database
             String sql = "INSERT INTO notes (courseID, username, text) VALUES (?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -183,7 +180,7 @@ public class Notes {
      *         Notes object that has all the updated attributes
      */
     public Notes getNote(int noteID, int courseID, String username) {
-        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+        try (Connection connection = DriverManager.getConnection(User.getUrl(), User.getUser(), User.getPword())) {
             String sql = "SELECT * FROM notes WHERE noteID=? AND courseID=? AND username=?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, noteID);
@@ -215,7 +212,7 @@ public class Notes {
      */
     public void updateNote(String updatedText) {
         setText(updatedText);
-        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+        try (Connection connection = DriverManager.getConnection(User.getUrl(), User.getUser(), User.getPword())) {
             // Insert note into the database
             String sql = "UPDATE notes SET text=? WHERE noteID=? AND courseID=? AND username=?";
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -243,7 +240,7 @@ public class Notes {
      */
     public ArrayList<Notes> getAllNotes(int courseID, String username) {
         ArrayList<Notes> notes = new ArrayList<Notes>();
-        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+        try (Connection connection = DriverManager.getConnection(User.getUrl(), User.getUser(), User.getPword())) {
             String sql = "SELECT * FROM notes WHERE courseID=? AND username=?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, courseID);

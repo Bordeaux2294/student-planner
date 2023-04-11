@@ -1,3 +1,4 @@
+package Model;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -11,11 +12,8 @@ import java.util.*;
 
 
 
-class Container {
+public class Container {
 
-    private static String url = "jdbc:mysql://localhost:3306/studentplannerdb";
-    private static String user = "root";
-    private static String password = "";
     private String courseCode;
     private String courseName;
     private ArrayList<Note> notes;
@@ -77,7 +75,7 @@ class Container {
 
 
     public void UpdateCourseContainer(){
-        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+        try (Connection connection = DriverManager.getConnection(User.getUrl(), User.getUser(), User.getPword())) {
             String sql="Update courses Set container = 1 where course_code = ?";                            
             PreparedStatement statement  = connection.prepareStatement(sql);                                
             statement.setString(1, courseCode);                                                                             

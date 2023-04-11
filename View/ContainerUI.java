@@ -1,3 +1,5 @@
+package View;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -301,15 +303,5 @@ public class ContainerUI extends JPanel{
 
 
 
-    ////Driver
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("ADD COURSE CONTAINER");
-
-        frame.setContentPane(new ContainerUI());
-
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-
-    }
+   
 }

@@ -95,37 +95,35 @@ public class MenuUI extends JFrame{
         pomodoroClockMenuItem.addActionListener(new MenuItemListener());
         pomodoroClockMenuItem.setBackground(new Color(255, 192, 203)); // Pink background
 
-        viewCoursesMenuItem = new JMenuItem("View Courses");
-        viewCoursesMenuItem.addActionListener(new MenuItemListener());
-        viewCoursesMenuItem.setBackground(new Color(255, 215, 0)); // Yellow background
-
         containerMenuItem = new JMenuItem("Course Containers");
         containerMenuItem.addActionListener(new MenuItemListener());
-        containerMenuItem.setBackground(new Color(255, 192, 203)); // Pink background
+        containerMenuItem.setBackground(new Color(255, 215, 0)); // Yellow background
+
+        
 
         courseTimetableMenuItem = new JMenuItem("Timetable");
         courseTimetableMenuItem.addActionListener(new MenuItemListener());
-        courseTimetableMenuItem.setBackground(new Color(255, 215, 0)); // Yellow background
+        courseTimetableMenuItem.setBackground(new Color(255, 192, 203)); // Pink background
 
         AddCourseMenuItem = new JMenuItem("Add Course");
         AddCourseMenuItem.addActionListener(new MenuItemListener());
-        AddCourseMenuItem.setBackground(new Color(255, 192, 203)); // Pink background
+        AddCourseMenuItem.setBackground(new Color(255, 215, 0)); // Yellow background
 
         gradeCalcMenuItem= new JMenuItem("Grade Calculator");
         gradeCalcMenuItem.addActionListener(new MenuItemListener());
-        gradeCalcMenuItem.setBackground(new Color(255, 215, 0)); // Pink background
+        gradeCalcMenuItem.setBackground(new Color(255, 192, 203)); // Pink background
 
 
         LogoutMenuItem = new JMenuItem("Log Out");
         LogoutMenuItem.addActionListener(new MenuItemListener());
-        LogoutMenuItem.setBackground(new Color(255, 192, 203)); // Yellow background
+        LogoutMenuItem.setBackground(new Color(255, 215, 0)); // Yellow background
 
         // Add menu items to the menu bar
         
         menubar.add(HomeMenuItem);
         menubar.add(createEventMenuItem);
         menubar.add(pomodoroClockMenuItem);
-        menubar.add(viewCoursesMenuItem);
+      
         menubar.add(containerMenuItem);
         menubar.add(courseTimetableMenuItem);
         menubar.add(AddCourseMenuItem);
@@ -253,11 +251,13 @@ public class MenuUI extends JFrame{
                 Frame.dispose();
                 new LoginUI();
             }
-            if (e.getSource()==viewCoursesMenuItem){
-                new CourseInfoUI();
-            }
+
             if (e.getSource()==containerMenuItem){
-                new ContainerUI();
+               
+                Frame.getContentPane().removeAll();
+                Frame.getContentPane().revalidate();
+                Frame.setContentPane(new ContainerUI());
+                
             }
 
             if(e.getSource()==AddCourseMenuItem){

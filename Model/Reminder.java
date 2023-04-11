@@ -14,10 +14,7 @@ import java.sql.Timestamp;
 public class Reminder {
 
 
-    private static String url = "jdbc:mysql://localhost:3306/studentplannerdb";
-    private static String user = "root";
-    private static String password = "Myaccess123.";
-   
+
 
 
     private int eid;
@@ -58,18 +55,6 @@ public class Reminder {
             System.out.println(ex);
         }
 
-    }
-
-    public static String getUrl() {
-        return url;
-    }
-
-    public static String getUser() {
-        return user;
-    }
-
-    public static String getPassword() {
-        return password;
     }
 
     public int getEid() {
