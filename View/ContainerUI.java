@@ -3,9 +3,16 @@ package View;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+
+import Controller.ContainerController;
 import Controller.NotesController;
 import Model.Container;
+import Model.Notes;
 
+import java.util.List;
 
 import java.util.*;
 
@@ -26,11 +33,11 @@ public class ContainerUI extends JPanel{
 
     private JButton addButton;
     private JButton deleteButton;
-    
+    private ContainerController cContainer ;
 
     public ContainerUI(){
-    
-        courseContainers = new ArrayList<>();
+         cContainer = new ContainerController();
+        courseContainers = cContainer.getCourseContainers();
         addcontainerpnl = new JPanel();
         addcontainerpnl.setPreferredSize(new Dimension(370,350));
 
@@ -131,24 +138,28 @@ public class ContainerUI extends JPanel{
             String courseName = courseNameField.getText();
             String courseCode= courseCodeField.getText();
 
-            if (courseName.isEmpty() || courseCode.isEmpty()) {
-                JOptionPane.showMessageDialog(addcontainerpnl, "Please enter a course name and a container name.", "Error", JOptionPane.ERROR_MESSAGE);
+            if (courseCode.isEmpty() && courseName.isEmpty()) {
+                JOptionPane.showMessageDialog(addcontainerpnl, "Please enter a course name or a course code.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
             for (Container container : courseContainers) {
-                if ((container.getCourseName().equals(courseName))&& (container.getCode()).equals(courseCode)) {
-                    JOptionPane.showMessageDialog(addcontainerpnl, "A course container with the same name already exists.", "Error", JOptionPane.ERROR_MESSAGE);
+                if ((container.getCode().equals(courseCode)) || (container.getCourseName()).equals(courseName)) {
+                    JOptionPane.showMessageDialog(addcontainerpnl, "A container already exists for that course.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
             }
 
+            String courseinfo="";
+            if (courseCode.isEmpty())
+                courseinfo = courseName;
+            else courseinfo = courseCode;
             
-            Container cContainer = new Container(courseCode, courseName);
-            courseContainers.add(cContainer);
+            cContainer.createContainer(courseinfo);
+            courseContainers = ContainerController.getCourseContainers();
             courseNameField.setText("");
             courseCodeField.setText("");
-            JOptionPane.showMessageDialog(addcontainerpnl, "Course container created for " + courseName);
+            JOptionPane.showMessageDialog(addcontainerpnl, "Course container created for " + courseinfo);
         }
     }    
 
@@ -170,19 +181,81 @@ public class ContainerUI extends JPanel{
     
 
     class ViewListener implements ActionListener {
+        
         public void actionPerformed(ActionEvent e) {
             // Clear the existing content of the courseListPanel
             courseListPanel.removeAll();
-    
+            courseContainers = cContainer.getCourseContainers();
+
+            
             // Loop through the list of added course containers and add them to the courseListPanel
-            for (int i = 0; i < courseContainers.size(); i++) {
-                Container container = courseContainers.get(i);
-                //JLabel courseNameLabel = new JLabel(container.getCourseName());
-                JLabel containerNameLabel = new JLabel(container.getCourseName());
-                //courseListPanel.add(courseNameLabel);
-                courseListPanel.add(containerNameLabel);
+            for (Container c : courseContainers) {
+                System.out.println(c.getCourseName());
+                JButton crsebtn = new JButton(c.getCourseName());
+                crsebtn.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        courseListPanel.removeAll();
+                       courseListPanel.revalidate();
+                       courseListPanel.repaint();
+                        
+
+                       //display notes saved for this course
+                       JTable notesTable = new JTable(new DefaultTableModel(new Object[]{"Ref No.","Title"}, 0)) {
+                        @Override
+                        public boolean isCellEditable(int row, int column) {
+                            return false;
+                        }
+                    };
+                    notesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+                    JScrollPane scrollPane = new JScrollPane(notesTable);
+                   
+                    courseListPanel.add(scrollPane);
+
+                    // Add the notes for the selected course to the table
+                    List<Notes> notes = c.getNotes();
+                    DefaultTableModel model = (DefaultTableModel) notesTable.getModel();
+                    for (Notes note : notes) {
+                        model.addRow(new Object[]{note.getNoteID(), note.getTitle()});
+                    
+                    }
+
+                    // Create a JTextArea to display the note content
+                    JTextArea noteTextArea = new JTextArea();
+                    noteTextArea.setEditable(false);
+                    noteTextArea.setLineWrap(true);
+                    noteTextArea.setWrapStyleWord(true);
+                    noteTextArea.setPreferredSize(new Dimension(100, 3000));
+                    JScrollPane noteScrollPane = new JScrollPane(noteTextArea);
+                    
+                    courseListPanel.add(noteScrollPane);
+
+                    // Add a listener to display the note content when a row is clicked in the table
+                    notesTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+                        @Override
+                        public void valueChanged(ListSelectionEvent e) {
+                            int selectedRow = notesTable.getSelectedRow();
+                            if (selectedRow >= 0) {
+                                int noteID = (int) notesTable.getValueAt(selectedRow, 0);
+                                for (Notes n: c.getNotes()){
+                                    if (noteID==n.getNoteID()){
+                                        String noteContent = n.getText();
+                                        noteTextArea.setText(noteContent);
+                                    }
+
+                                }
+                            }
+                        }
+                    });
+                
+                    }
+                });
+                courseListPanel.add(crsebtn);
                 courseListPanel.add(Box.createRigidArea(new Dimension(0, 10)));
             }
+            
+          
+        
+          
             JScrollPane scrollPane = new JScrollPane(courseListPanel);
             scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
             scrollPane.setPreferredSize(new Dimension(400, 400));
@@ -200,25 +273,19 @@ public class ContainerUI extends JPanel{
     private class AddNotesListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             NotesUI ui = new NotesUI();
-            if (courseNameField.getText().compareToIgnoreCase("") != 0) {
-                for (Container container : courseContainers) {
-                    if (container.getCourseName().compareToIgnoreCase(courseNameField.getText()) == 0) {
-                        int index = courseContainers.indexOf(container);
-                        ui.writeNoteUI(index, "hel");
-                        return;
-                    }
-                }
-            } else if (courseCodeField.getText().compareToIgnoreCase("") != 0) {
-                for (Container container : courseContainers) {
-                    if (container.getCode().compareToIgnoreCase(courseCodeField.getText()) == 0) {
-                        int index = courseContainers.indexOf(container);
-                        ui.writeNoteUI(index, "hel");
-                        return;
-                    }
-                }
-            } else {
-                ui.writeNoteUI(0, "hel");
+            if (courseNameField.getText().isEmpty() && courseCodeField.getText().isEmpty()){
+                JOptionPane.showMessageDialog(addcontainerpnl, "Please enter a course name or a course code.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
+            else {
+                for (Container container : courseContainers) {
+                    if (container.getCourseName().compareToIgnoreCase(courseNameField.getText()) == 0 || container.getCode().compareToIgnoreCase(courseCodeField.getText()) == 0) {
+                        
+                        ui.writeNoteUI(container.getCode());
+                        return;
+                    }
+                }
+            }   
         }
     }
 

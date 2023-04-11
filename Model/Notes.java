@@ -9,11 +9,14 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
+import Controller.AccountController;
+
 public class Notes {
  
     private String text = "";
-    public int courseID = 0;
-    private int noteID = -999;
+    public String courseID ="";
+    private int noteID;
+    private String title="";
     private String username = "";
 
     /**
@@ -28,10 +31,11 @@ public class Notes {
      *                   String which is the username of the person to which the
      *                   account belongs to
      */
-    public Notes(String noteString, int courseID, String username) {
+    public Notes(String title, String noteString, String courseID) {
+        this.title = title;
         this.text = noteString;
         this.courseID = courseID;
-        this.username = username;
+        
         saveNote();
     }
 
@@ -71,7 +75,7 @@ public class Notes {
      * @return
      *         Int which is the Course ID
      */
-    public int getCourseID() {
+    public String getCourseID() {
         return this.courseID;
     }
 
@@ -87,15 +91,23 @@ public class Notes {
     }
 
     /**
+     * This method is used to return the Course ID that the note belongs to
+     * 
+     * @return
+     *         String which is the Course Title
+     */
+    public String getTitle(){
+        return this.title;
+    }
+
+    /**
      * this method is used to return the username that is attached to the note which
      * belongs to the account holder.
      * 
      * @return
      *         String username
      */
-    public String getUsername() {
-        return this.username;
-    }
+ 
 
     /**
      * This method is used to set the text of the note.
@@ -114,7 +126,7 @@ public class Notes {
      * @param courseID
      *                 Int to be set as teh courseID of the note
      */
-    public void setCourse(int courseID) {
+    public void setCourse(String courseID) {
         this.courseID = courseID;
     }
 
@@ -127,30 +139,27 @@ public class Notes {
     private void setNoteID(int noteID) {
         this.noteID = noteID;
     }
+    
 
-    /**
-     * This method is used to set the username of the Note to which the account
-     * belongs to
-     * 
-     * @param username
-     *                 String name a person to which the account belongs to
-     */
-    private void setUsername(String username) {
-        this.username = username;
-    }
+  
 
     /**
      * Inserts a note into the database. Stores the noteID, courseID and text of the
      * note.
      */
+
+     public void setTitle(String title){
+        this.title= title;
+     }
     public void saveNote() {
         try (Connection connection = DriverManager.getConnection(User.getUrl(), User.getUser(), User.getPword())) {
             // Insert note into the database
-            String sql = "INSERT INTO notes (courseID, username, text) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO notes (title, courseID, username, text) VALUES (?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, getCourseID());
-            statement.setString(2, getUsername());
-            statement.setString(3, getText());
+            statement.setString(1, getTitle());
+            statement.setString(2, getCourseID());
+            statement.setString(3, AccountController.getCurrentUser().getCurrentUsername());
+            statement.setString(4, getText());
             statement.executeUpdate();
 
             ResultSet generatedKeys = statement.getGeneratedKeys();
@@ -179,20 +188,21 @@ public class Notes {
      * @return
      *         Notes object that has all the updated attributes
      */
-    public Notes getNote(int noteID, int courseID, String username) {
+    public Notes getNote(int noteID, String courseID) {
         try (Connection connection = DriverManager.getConnection(User.getUrl(), User.getUser(), User.getPword())) {
             String sql = "SELECT * FROM notes WHERE noteID=? AND courseID=? AND username=?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, noteID);
-            statement.setInt(2, courseID);
-            statement.setString(3, username);
+            statement.setString(2, courseID);
+            statement.setString(3, AccountController.getCurrentUser().getCurrentUsername());
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
+                setTitle(result.getString("title"));
                 setText(result.getString("text"));
-                setCourse(result.getInt("courseID"));
+                setCourse(result.getString("courseID"));
                 setNoteID(result.getInt("noteID"));
-                setUsername(result.getString("username"));
+                
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -218,8 +228,8 @@ public class Notes {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, getText());
             statement.setInt(2, getNoteID());
-            statement.setInt(3, getCourseID());
-            statement.setString(4, getUsername());
+            statement.setString(3, getCourseID());
+            statement.setString(4, AccountController.getCurrentUser().getCurrentUsername());
             int rowsUpdated = statement.executeUpdate();
             System.out.println("Rows updated : " + rowsUpdated);
         } catch (SQLException ex) {
@@ -231,28 +241,28 @@ public class Notes {
     /**
      * This method returns all the notes for a specific course
      * 
-     * @param courseID
+     * @param courseCode
      *                 Int unique value to identify course
      * @param username
      *                 String name of the person to which this account belongs to
      * @return
      *         ArrayList<Notes> a list of Notes objects
      */
-    public ArrayList<Notes> getAllNotes(int courseID, String username) {
+    public static ArrayList<Notes> getAllNotes(String courseCode) {
         ArrayList<Notes> notes = new ArrayList<Notes>();
         try (Connection connection = DriverManager.getConnection(User.getUrl(), User.getUser(), User.getPword())) {
             String sql = "SELECT * FROM notes WHERE courseID=? AND username=?";
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, courseID);
-            statement.setString(2, username);
+            statement.setString(1, courseCode);
+            statement.setString(2, AccountController.getCurrentUser().getCurrentUsername());
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
                 Notes note = new Notes();
+                note.setTitle(result.getString("title"));
                 note.setText(result.getString("text"));
-                note.setCourse(result.getInt("courseID"));
+                note.setCourse(result.getString("courseID"));
                 note.setNoteID(result.getInt("noteID"));
-                note.setUsername(result.getString("username"));
                 System.out.println(result.getString("text"));
                 notes.add(note);
             }
@@ -264,7 +274,7 @@ public class Notes {
 
     @Override
     public String toString() {
-        return "<NoteID>: " + getNoteID() + " <CourseID>: " + getCourseID() + " <User>: " + getUsername() + " <Note>: "
+        return "<NoteID>: " + getNoteID() + " <CourseID>: " + getCourseID() + " <User>: " + AccountController.getCurrentUser().getCurrentUsername() + " <Note>: "
                 + getText();
     }
 }

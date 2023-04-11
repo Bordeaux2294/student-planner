@@ -31,8 +31,8 @@ public class NotesController {
      * @return
      *         Notes object that was just created.
      */
-    public Notes createNote(String text, int courseID, String username) {
-        Notes note = new Notes(text, courseID, username);
+    public Notes createNote(String title, String text, String courseID) {
+        Notes note = new Notes(title, text, courseID);
         this.note = note;
         return this.note;
     }
@@ -51,9 +51,9 @@ public class NotesController {
      *         Notes object. Notes object will be empty if match is not found in the
      *         database
      */
-    public Notes getNote(int noteID, int courseID, String username) {
+    public Notes getNote(int noteID, String courseID) {
         Notes note = new Notes();
-        return note.getNote(noteID, courseID, username);
+        return note.getNote(noteID, courseID);
     }
 
     /**
@@ -66,9 +66,9 @@ public class NotesController {
      * @return
      *         ArrayList<Notes> a list of Notes objects that belongs to the course
      */
-    public ArrayList<Notes> getAllNotesForCourse(int courseID, String username) {
+    public ArrayList<Notes> getAllNotesForCourse(String courseID) {
         Notes note = new Notes();
-        return note.getAllNotes(courseID, username);
+        return note.getAllNotes(courseID);
     }
 
     /**
@@ -118,7 +118,7 @@ public class NotesController {
      * @return
      *         int
      */
-    public int getCourseID(Notes note) {
+    public String getCourseID(Notes note) {
         return note.getCourseID();
     }
 

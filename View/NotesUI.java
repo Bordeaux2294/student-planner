@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 import Controller.NotesController;
+import Model.Container;
 import Model.Notes;
 
 public class NotesUI extends JFrame {
@@ -27,23 +28,26 @@ public class NotesUI extends JFrame {
      *                 belongs to. This is to prevent different users of the app
      *                 from accessing notes that do not belong to them.
      */
-    public void writeNoteUI(int courseID, String username) {
+    public void writeNoteUI(String courseID) {
         setTitle("Write Note");
-
+   
         JTextArea textArea = new JTextArea(20, 40);
-
+        JTextField titleField = new JTextField(20);
         JButton saveButton = new JButton("Save");
         saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 System.out.println(textArea.getText());
                 String noteText = textArea.getText();
+                String title = titleField.getText();
                 if (noteText.compareToIgnoreCase("") != 0) {
                     JFrame loadingFrame = new JFrame("Saving...");
                     loadingFrame.setSize(400, 50); // set the size of the JFrame
                     loadingFrame.setVisible(true); // set the JFrame to be visible
                     Thread thread = new Thread(() -> {
                         NotesController controller = new NotesController();
-                        Notes note = controller.createNote(noteText, courseID, username);
+                        Notes note = controller.createNote(title, noteText, courseID);
+                       
+                        Container.addNotes(note);
                     });
 
                     thread.start();
@@ -73,8 +77,12 @@ public class NotesUI extends JFrame {
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(saveButton);
         buttonPanel.add(cancelButton);
-
+        JPanel heading = new JPanel();
+       
+        heading.add(new JLabel("Give your notes a title"));
+        heading.add (titleField);
         setLayout(new BorderLayout());
+        add(heading, BorderLayout.NORTH);
         add(new JScrollPane(textArea), BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
 
@@ -95,7 +103,7 @@ public class NotesUI extends JFrame {
      *                 the note belongs to. [SECURITY FEATURE - SEE 'WRITENOTEUI'
      *                 METHOD]
      */
-    public void displayNoteUI(int noteID, int courseID, String username) {
+    public void displayNoteUI(int noteID, String courseID) {
         setTitle("Your Note");
 
         JTextArea textArea = new JTextArea(20, 40);
@@ -104,7 +112,7 @@ public class NotesUI extends JFrame {
         loadingFrame.setVisible(true);
         Thread thread1 = new Thread(() -> {
             NotesController controller = new NotesController();
-            Notes note = controller.getNote(noteID, courseID, username);
+            Notes note = controller.getNote(noteID, courseID);
             textArea.setText(note.getText());
         });
 
@@ -128,7 +136,7 @@ public class NotesUI extends JFrame {
                     loadingFrame.setVisible(true); // set the JFrame to be visible
                     Thread thread = new Thread(() -> {
                         NotesController controller = new NotesController();
-                        Notes note = controller.getNote(noteID, courseID, username);
+                        Notes note = controller.getNote(noteID, courseID);
                         controller.updateNote(noteText, note);
                         textArea.setText(note.getText());
                     });
@@ -170,10 +178,10 @@ public class NotesUI extends JFrame {
         setVisible(true);
     }
 
-    public static void main(String[] args) {
-        NotesUI ui = new NotesUI();
-        // ui.writeNoteUI(0, "hel");
-        ui.displayNoteUI(20, 0, "hel");
-        // ui.writeNoteUI(0, "hel");
-    }
+    // public static void main(String[] args) {
+    //     NotesUI ui = new NotesUI();
+    //     // ui.writeNoteUI(0, "hel");
+    //     ui.displayNoteUI(20, 0);
+    //     // ui.writeNoteUI(0, "hel");
+    // }
 }
